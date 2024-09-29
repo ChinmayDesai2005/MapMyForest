@@ -15,23 +15,23 @@ function SideBar() {
             <h1>MAYMYFOREST</h1>
         </div>
         <div className="RoutesLinkContainer">
-            <NavLink to={'/home'} activeClassName="active">
+            <NavLink to={'/home/project'} activeclassname="active">
                 <VscGithubProject className='linkIcon'/> 
                 <p>Project</p>
             </NavLink>
-            <NavLink to={'/Random'} activeClassName="active">
+            <NavLink to={'/home/manage'} activeclassname="active">
                 <RiFileSettingsLine  className='linkIcon'/> 
                 <p>Manage</p>
             </NavLink>
-            <NavLink to={'/Random'}>
+            <NavLink to={'/random'}>
                 <RiImageAddFill className='linkIcon'/>
                 <p>Add Image</p>
             </NavLink>
-            <NavLink to={'/Random'}>
+            <NavLink to={'/random'}>
                 <AiOutlineVideoCameraAdd className='linkIcon'/>
                 <p>Add Video</p>
             </NavLink>
-            <NavLink to={'/Random'}>
+            <NavLink to={'/home/analysis'}>
                 <SiGoogleanalytics className='linkIcon'/>
                 <p>Analysis</p>
             </NavLink>
