@@ -1,7 +1,4 @@
-@import url('../../variable.css');
-
-
-.header-container {
+.projectheader-container {
     width: 100%;
     display: flex;
     justify-content: flex-end;
