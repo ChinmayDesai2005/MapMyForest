@@ -36,10 +36,12 @@ function SideBar() {
                 <p>Analysis</p>
             </NavLink>
         </div>
-        <div className="BottomSettingsContainer">
+        
+        <NavLink to={'/home/profile'} className="BottomSettingsContainer">
             <IoSettingsSharp className='settings-icons'/>
-            <h6>Setting</h6>
-        </div>
+            <h6>Settings</h6>
+        </NavLink>
+        
     </div>
   )
 }

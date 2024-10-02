@@ -45,8 +45,8 @@
     }
 
     h6 {
-        width: 9.11013rem;
-        height: 2.14363rem;
+        width: 7rem;
+        height: auto;
         color: #FFF;
         text-align: center;
         font-family: Outfit;
@@ -54,6 +54,7 @@
         font-style: normal;
         font-weight: 500;
         line-height: normal;
+        text-decoration: none;
     }
 }
 

@@ -1,0 +1,101 @@
+.ProfileCard {
+    padding: 3rem 1.75rem;
+    width: 65rem;
+    height: 40rem;
+    flex-shrink: 0;
+    border-radius: 1.5625rem;
+    background: var(--white);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.DetailsContainer {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.ImageContainer {
+    width: 15%;
+    height: auto;
+    position: relative;
+}
+
+.icon-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.ImageContainer img {
+    width: 80%;
+    height: inherit;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.edit-icon {
+    position: absolute;
+    bottom: 10%;
+    right: 15%;
+    background-color: green;
+    color: white;
+    border-radius: 50%;
+    padding: 5px;
+    width: 1.74494rem;
+    height: 1.72694rem;
+    cursor: pointer;
+
+    path {
+        size: 14px;
+    }
+}
+
+
+.FormPart1,
+.FormPart2 {
+    width: 38%;
+
+    label {
+        height: 1.0625rem;
+        color: #232323;
+        font-family: Inter;
+        font-size: 1rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+    }
+
+    input {
+        height: 2.87825rem;
+        border-radius: 0.9375rem;
+        border: 1px solid #DFEAF2;
+        background: #FFF;
+        font-family: Inter;
+        font-size: 0.9375rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+    }
+}
+
+.SaveButton button {
+    margin: 1.73rem 0 1.73rem auto;
+    display: flex;
+    width: 11.05125rem;
+    height: 2.87825rem;
+    padding: 0.8125rem 3.625rem;
+    justify-content: center;
+    align-items: center;
+    gap: 0.625rem;
+    flex-shrink: 0;
+    border-radius: 0.9375rem;
+    border: none;
+    background: var(--dark-green);
+
+    color: #FFF;
+    text-align: center;
+    font-family: Inter;
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
