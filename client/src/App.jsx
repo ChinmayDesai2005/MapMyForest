@@ -31,7 +31,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/uploadimage" element={<UploadImage />} />
-        <Route path="/register" element={<LoginSignup />} />
+        <Route path="/auth" element={<LoginSignup />} />
         <Route path="/home" element={<Layout />}>
           <Route index element={<Starter/>} />
           <Route path="/home/project" element={<Projects />} />

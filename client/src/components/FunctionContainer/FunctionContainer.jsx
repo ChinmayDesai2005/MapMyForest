@@ -1,4 +1,3 @@
-import React from 'react';
 import AlternateSection from '../AlternateSection/AlternateSection';
 import tree from "../../assets/illustration_1.png";
 import drone from "../../assets/illustration_2.png";
