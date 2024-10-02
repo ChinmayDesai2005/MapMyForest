@@ -5,9 +5,10 @@ const UserContext = createContext();
 
 const UserProvider = ({children}) =>{
     const [user,setUser] = useState();
+    const[selectedProject,setSelectedProject] = useState();
 
     return(
-        <UserContext.Provider value={{user,setUser}}>
+        <UserContext.Provider value={{user,setUser,selectedProject,setSelectedProject}}>
             {children}
         </UserContext.Provider>
     )
