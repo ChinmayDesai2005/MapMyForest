@@ -20,6 +20,7 @@
     }
 
     h1 {
+        cursor: pointer;
         width: 11.1875rem;
         height: 1.6875rem;
         color: #000;

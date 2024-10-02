@@ -2,13 +2,15 @@ import './HomeHeader.css';
 import { FaBell } from 'react-icons/fa'; 
 import { IoSettingsSharp } from 'react-icons/io5';
 import Logo from '../../assets/Logo_png.png';
+import { useNavigate } from 'react-router-dom';
 
 function HomeHeader() {
+  const navigate = useNavigate();
   return (
     <header className="header-container">
       <div className="brand-container">
         <img src={Logo} alt="logo" className="logo" />
-        <h1 className="brand-title">MAPMYFOREST</h1>
+        <h1 className="brand-title" onClick={()=>(navigate('/'))}>MAPMYFOREST</h1>
       </div>
       <nav className="nav-links">
         <a href="/" className="nav-link">Home</a>

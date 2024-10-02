@@ -1,10 +1,14 @@
-import React from "react";
 import "./Main.css";
 import { FaFacebook, FaGoogle, FaLinkedin} from 'react-icons/fa';
+import { useNavigate } from "react-router-dom";
 
 function SignUp() {
+  const navigate = useNavigate();
+  const handleSubmit = async() => {
+    navigate('/home')
+  }
   return (
-    <form>
+    <form method="post" onSubmit={handleSubmit}>
       <input type="email" placeholder="Email" required />
       <input type="password" placeholder="Password" required />
       <input type="password" placeholder="Confirm Password" required />
