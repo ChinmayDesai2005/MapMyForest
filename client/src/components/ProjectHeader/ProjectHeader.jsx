@@ -4,7 +4,7 @@ import { IoSettingsSharp } from 'react-icons/io5';
 
 function ProjectHeader() {
   return (
-    <header className="header-container">
+    <header className="projectheader-container">
       <nav className="nav-links">
         <a href="/" className="nav-link">Home</a>
         <a href="/projects" className="nav-link">Projects</a>
