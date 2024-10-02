@@ -1,18 +1,19 @@
 import './SideBar.css'
 import Logo from '../../assets/Logo_png.png';
 import { IoSettingsSharp } from "react-icons/io5";
-import {NavLink} from "react-router-dom"
+import {NavLink, useNavigate} from "react-router-dom"
 import { VscGithubProject } from "react-icons/vsc";
 import { RiImageAddFill,RiFileSettingsLine  } from "react-icons/ri";
 import { AiOutlineVideoCameraAdd } from "react-icons/ai";
 import { SiGoogleanalytics } from "react-icons/si";
 
 function SideBar() {
+    const navigate = useNavigate();
   return (
     <div className='MainSideBarContainer'>
         <div className="BrandContainer">
             <img src={Logo} alt="logo.png" />
-            <h1>MAYMYFOREST</h1>
+            <h1 onClick={()=>(navigate('/'))}>MAYMYFOREST</h1>
         </div>
         <div className="RoutesLinkContainer">
             <NavLink to={'/home/project'} activeclassname="active">
