@@ -11,6 +11,8 @@ import Analysis from './pages/Analysis/Analysis';
 import Profile from './pages/Profile/Profile';
 import Error from "./pages/Error/Error";
 import Starter from "./pages/misc/Starter";
+import LoginSignup from "./pages/Auth/LoginSignup";
+
 
 function App() {
 
@@ -29,6 +31,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/uploadimage" element={<UploadImage />} />
+        <Route path="/register" element={<LoginSignup />} />
         <Route path="/home" element={<Layout />}>
           <Route index element={<Starter/>} />
           <Route path="/home/project" element={<Projects />} />
