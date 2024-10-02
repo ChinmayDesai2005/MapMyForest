@@ -1,4 +1,4 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
 import './AlternateSection.css';
 import GetStartedButton from '../GetStartedButton/GetStartedButton';
 
