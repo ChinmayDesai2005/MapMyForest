@@ -13,7 +13,7 @@ function SideBar() {
     <div className='MainSideBarContainer'>
         <div className="BrandContainer">
             <img src={Logo} alt="logo.png" />
-            <h1 onClick={()=>(navigate('/'))}>MAYMYFOREST</h1>
+            <h1 onClick={()=>(navigate('/'))}>MAPMYFOREST</h1>
         </div>
         <div className="RoutesLinkContainer">
             <NavLink to={'/home/project'} activeclassname="active">
@@ -24,7 +24,7 @@ function SideBar() {
                 <RiFileSettingsLine  className='linkIcon'/> 
                 <p>Manage</p>
             </NavLink>
-            <NavLink to={'/random'}>
+            <NavLink to={'/home/uploadimage'}>
                 <RiImageAddFill className='linkIcon'/>
                 <p>Add Image</p>
             </NavLink>
