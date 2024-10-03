@@ -30,12 +30,12 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/uploadimage" element={<UploadImage />} />
         <Route path="/auth" element={<LoginSignup />} />
         <Route path="/home" element={<Layout />}>
           <Route index element={<Starter/>} />
           <Route path="/home/project" element={<Projects />} />
           <Route path="/home/manage" element={<Manage />} />
+          <Route path="/home/uploadimage" element={<UploadImage />} />
           <Route path="/home/analysis" element={<Analysis />} />
           <Route path="/home/profile" element={<Profile />} />
         </Route>

@@ -62,26 +62,26 @@ function Manage() {
         </div>
 
         <div className="form-group media-upload">
-          <div className="file-upload">
-            <label>Select Photos to Upload</label>
-            <input
-              type="file"
-              name="photos"
-              onChange={handleFileChange}
-              accept="image/*"
-            />
-          </div>
+  <div className="file-upload">
+    <label>Drop Image or Browse</label>
+    <input
+      type="file"
+      name="photos"
+      onChange={handleFileChange}
+      accept="image/*"
+    />
+  </div>
 
-          <div className="file-upload">
-            <label>Select Videos to Upload</label>
-            <input
-              type="file"
-              name="videos"
-              onChange={handleFileChange}
-              accept="video/*"
-            />
-          </div>
-        </div>
+  <div className="file-upload">
+    <label>Drag Video or Browse</label>
+    <input
+      type="file"
+      name="videos"
+      onChange={handleFileChange}
+      accept="video/*"
+    />
+  </div>
+</div>
 
         <button type="submit" className="submit-btn">
           Save & Continue
