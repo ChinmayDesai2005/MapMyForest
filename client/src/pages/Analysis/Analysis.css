@@ -1,0 +1,40 @@
+.analysis-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.analysis-container h1,
+.analysis-container h2,
+.analysis-container h3 {
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+.analysis-container img {
+    max-width: 100%;
+    height: auto;
+    margin: 20px auto;
+}
+
+.analysis-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.analysis-container table,
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.analysis-container th {
+    background-color: #f4f4f4;
+    text-align: left;
+}
+
+.analysis-container td {
+    background-color: #fafafa;
+}
