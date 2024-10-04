@@ -41,6 +41,6 @@ def loginUser():
     if User.verify_password(user_data['password'], password):
         user_data['_id'] = str(user_data['_id'])
         user_data.pop('password', None)
-        return jsonify({'message': f'Login successful {user_data['username']}', 'user': user_data}), 200
+        return jsonify({'message': f"Login successful {user_data['username']}", 'user': user_data}), 200
     else:
         return jsonify({'error': 'Invalid password'}), 401
