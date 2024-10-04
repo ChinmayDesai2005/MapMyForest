@@ -15,22 +15,24 @@ def enumerate():
 
     # Get image from request
     image = request.form['imageb64']
+    conf = float(request.form['confidence'])
+    iou = float(request.form['iou'])
     image = base64.b64decode(image)
     image = Image.open(io.BytesIO(image))
-    image.convert('RGB').save("backend/blueprints/treeEnum/input/input.jpg")
+    image.convert('RGB').save("blueprints/treeEnum/input/input.jpg")
     
     # Run model
-    model = YOLO("backend/model/best.pt")
-    results = model.predict("backend/blueprints/treeEnum/input/input.jpg", conf=0.15)
+    model = YOLO("model/best (2).pt")
+    results = model.predict("blueprints/treeEnum/input/input.jpg", conf=conf, imgsz=640, augment=True, nms=True, iou=iou)
 
     # Save image
     for result in results:
-        result.save(filename=f"backend/blueprints/treeEnum/output/result.jpg")
+        result.save(filename=f"blueprints/treeEnum/output/result.jpg")
 
     # print(results) 
 
     # Create B64 for result image
-    with open("backend/blueprints/treeEnum/output/result.jpg", "rb") as f:
+    with open("./blueprints/treeEnum/output/result.jpg", "rb") as f:
         annotatedImage = base64.b64encode(f.read()).decode('utf-8')
 
     #Generate response
