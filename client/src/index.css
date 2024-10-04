@@ -27,7 +27,7 @@ a {
 
 .MenuContainer {
   margin: 0;
-  width: 20rem;
+  width: 25%;
   overflow-y: hidden;
   border-right: 0.0775rem solid var(--grey2);
 }
@@ -36,6 +36,7 @@ a {
   flex: 1;
   display: flex;
   flex-direction: column;
+  width: 75%;
 }
 
 .ContentHeader {
