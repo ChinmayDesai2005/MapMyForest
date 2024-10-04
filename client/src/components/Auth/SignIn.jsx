@@ -1,16 +1,41 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import "./Main.css";
 import { FaFacebook, FaGoogle, FaLinkedin } from 'react-icons/fa';
+import { toast } from 'react-toastify';
+import axios from "axios";
 
 function SignIn() {
   const navigate = useNavigate();
-  const handleSubmit = async() => {
-    navigate('/home')
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/v1/user/login", {
+        email,
+        password
+      });
+
+      if (response.status === 200) {
+        toast.success(response.data.message);
+        navigate('/home');
+      }
+    } catch (err) {
+      // Handle error and show toast notifications for errors
+      if (err.response && err.response.data.error) {
+        toast.error(err.response.data.error);
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
+    }
   }
   return (
     <form method="post" onSubmit={handleSubmit}>
-      <input type="email" placeholder="Email" required />
-      <input type="password" placeholder="Password" required />
+      <input type="email" placeholder="Email" required value={email} onChange={(e) => setEmail(e.target.value)}/>
+      <input type="password" placeholder="Password" required value={password} onChange={(e) => setPassword(e.target.value)}/>
       <button type="submit">Login</button>
       <div className="social-login">
         <p>Continue with</p> 

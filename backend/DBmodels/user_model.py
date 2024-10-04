@@ -12,6 +12,7 @@ client = MongoClient(MONGODB_URI)
 db = client.get_database('mapmyforest')
 user_collection = db.get_collection('users')
 
+user_collection.create_index('email', unique=True)
 class User:
     def __init__(self,username,email,password):
         self.username = username
