@@ -1,17 +1,43 @@
 import "./Main.css";
 import { FaFacebook, FaGoogle, FaLinkedin} from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import axios from 'axios'; 
+import { toast } from 'react-toastify';
 
 function SignUp() {
   const navigate = useNavigate();
-  const handleSubmit = async() => {
-    navigate('/home')
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
+
+  const handleSubmit = async(e) => {
+    e.preventDefault()
+    const userData = {
+      username: username,
+      email: email,
+      password: password
+    }
+    try {
+      const response = await axios.post('http://localhost:5000/api/v1/user/register', userData);
+
+      if (response.status === 201) {
+        toast.success(response.data.message);
+        navigate('/home');
+      }
+    } catch (error) {
+      if (error.response && error.response.data) {
+        alert(error.response.data.error || 'Registration failed');
+      } else {
+        alert('An error occurred during registration.');
+      }
+    }
   }
   return (
     <form method="post" onSubmit={handleSubmit}>
-      <input type="email" placeholder="Email" required />
-      <input type="password" placeholder="Password" required />
-      <input type="password" placeholder="Confirm Password" required />
+      <input type="email" placeholder="Email" required value={email} onChange={(e) => setEmail(e.target.value)}/>
+      <input type="text" placeholder="Username" required value={username} onChange={(e) => setUsername(e.target.value)}/>
+      <input type="password" placeholder="Password" required  value={password} onChange={(e) => setPassword(e.target.value)}/>
       <button type="submit">Sign Up</button>
       <div className="social-login">
         <p>Continue with</p> 
