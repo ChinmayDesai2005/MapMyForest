@@ -22,3 +22,25 @@ def registerUser():
             'email': new_user.email
         }
     }),201
+
+
+def loginUser():
+    data = request.get_json()
+
+    email = data.get('email')
+    password = data.get('password')
+
+    if not email or not password:
+        return jsonify({'error': 'Email and password are required'}), 400
+
+    user_data = User.find_by_email(email)
+
+    if user_data is None:
+        return jsonify({'error': 'User not found'}), 404
+
+    if User.verify_password(user_data['password'], password):
+        user_data['_id'] = str(user_data['_id'])
+        user_data.pop('password', None)
+        return jsonify({'message': f'Login successful {user_data['username']}', 'user': user_data}), 200
+    else:
+        return jsonify({'error': 'Invalid password'}), 401
