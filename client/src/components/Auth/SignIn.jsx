@@ -4,11 +4,14 @@ import "./Main.css";
 import { FaFacebook, FaGoogle, FaLinkedin } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import axios from "axios";
+import { UserState } from "../../Context/UserContext";
 
 function SignIn() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const {setUser} = UserState();
 
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -20,8 +23,10 @@ function SignIn() {
       });
 
       if (response.status === 200) {
+        localStorage.setItem('MapMyForestUser',JSON.stringify(response.data.user))
+        setUser(response.data.user)
         toast.success(response.data.message);
-        navigate('/home');
+        navigate('/project');
       }
     } catch (err) {
       // Handle error and show toast notifications for errors

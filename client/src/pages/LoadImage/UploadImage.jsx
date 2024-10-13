@@ -5,55 +5,64 @@ import ReactMarkdown from "react-markdown";
 import "./upload.css";
 
 function UploadImage() {
-  const [singleImage, setSingleImage] = useState(null);
   const [selectedName, setSelectedName] = useState("");
   const [ImageBase64, setImageBase64] = useState("");
   const [text, setText] = useState("# Hello world, we are good");
-  const [responseImage, setresponseImage] = useState("");
-  const [responseCount, setresponseCount] = useState("");
+  const [selectedImages, setSelectedImages] = useState([]); // State for multiple images
+  const [responseImages, setResponseImages] = useState([]); // For storing response images
+  const [responseCounts, setResponseCounts] = useState([]);
   const [detectionConf, setDetectionConf] = useState(0.15);
   const [detectionIOU, setDetectionIOU] = useState(0.5);
 
-  const handleImage = async (e) => {
-    const file = e.target.files[0];
-    setSingleImage(file);
-    setSelectedName(file.name);
-    const base64 = await convertToBase64(file);
-    setImageBase64(base64.split(",")[1]);
-    setresponseCount("");
-    setresponseImage("");
+  const handleImages = async (e) => {
+    const files = Array.from(e.target.files); 
+    const base64Images = await Promise.all(
+      files.map((file) => convertToBase64(file).then((base64) => base64.split(",")[1]))
+    );
+    
+    setSelectedImages(base64Images); 
+    setSelectedName(`${files.length} file(s) selected`); 
   };
 
   const handleSubmit = async () => {
-    setresponseCount("");
-    setresponseImage("");
+    setResponseImages([]);
+    setResponseCounts([]);
     console.log(ImageBase64);
     console.log(detectionConf, detectionIOU);
     const endpoint = "http://localhost:5000/enumerate";
     try {
-      let formData = new FormData();
-      formData.append("imageb64", ImageBase64);
-      formData.append("confidence", detectionConf);
-      formData.append("iou", detectionIOU);
+      const responseData = await Promise.all(
+        selectedImages.map(async (imageBase64) => {
+          let formData = new FormData();
+          formData.append("imageb64", imageBase64);
+          formData.append("confidence", detectionConf);
+          formData.append("iou", detectionIOU);
 
-      const response = await fetch(endpoint, {
-        method: "POST",
-        body: formData,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Headers": "*",
-        },
-      });
-      const json = await response.json();
-      console.log(json);
-      setresponseImage(json["annotated"]);
-      setresponseCount(json["count"]);
+          const response = await fetch(endpoint, {
+            method: "POST",
+            body: formData,
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Headers": "*",
+            },
+          });
+
+          return response.json();
+        })
+      );
+
+      // Extract response images and tree counts
+      const newResponseImages = responseData.map((res) => res["annotated"]);
+      const newResponseCounts = responseData.map((res) => res["count"]);
+
+      setResponseImages(newResponseImages);
+      setResponseCounts(newResponseCounts);
     } catch (error) {
       console.error(error.message);
     }
   };
 
-  const convertToBase64 = (file) => {
+const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
@@ -79,7 +88,8 @@ function UploadImage() {
             <input
               type="file"
               className="default-file-input"
-              onChange={handleImage}
+              onChange={handleImages}
+              multiple
             />
           </div>
         </div>
@@ -116,20 +126,27 @@ function UploadImage() {
             Submit
           </button>
         </div>
-        {responseCount && responseImage && (
+        {responseCounts.length > 0 && responseImages.length > 0 && (
           <div className="UploadSection_Analysis_Output_MarkDown">
             <ReactMarkdown>
-              {`## **Tree Enumeration Results:**\n#### Total trees found: **${responseCount}** \n #### Output Image: \n`}
+              {`## **Tree Enumeration Results:**`}
             </ReactMarkdown>
             <div className="upload-section-analysis-output-images">
-              <img
-                src={"data:image/jpg;base64," + ImageBase64}
-                alt="annotated-image"
-              />
-              <img
-                src={"data:image/jpg;base64," + responseImage}
-                alt="annotated-image"
-              />
+              {selectedImages.map((image, index) => (
+                <div key={index}>
+                  <ReactMarkdown>
+                    {`### Image ${index + 1}: **${responseCounts[index]}** trees found`}
+                  </ReactMarkdown>
+                  <img
+                    src={"data:image/jpg;base64," + image}
+                    alt={`uploaded-image-${index}`}
+                  />
+                  <img
+                    src={"data:image/jpg;base64," + responseImages[index]}
+                    alt={`annotated-image-${index}`}
+                  />
+                </div>
+              ))}
             </div>
           </div>
         )}

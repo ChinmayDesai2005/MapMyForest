@@ -4,12 +4,15 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from 'axios'; 
 import { toast } from 'react-toastify';
+import { UserState } from "../../Context/UserContext";
 
 function SignUp() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
+
+  const {setUser} = UserState();
 
   const handleSubmit = async(e) => {
     e.preventDefault()
@@ -22,8 +25,10 @@ function SignUp() {
       const response = await axios.post('http://localhost:5000/api/v1/user/register', userData);
 
       if (response.status === 201) {
+        localStorage.setItem('MapMyForestUser',JSON.stringify(response.data.user))
+        setUser(response.data.user)
         toast.success(response.data.message);
-        navigate('/home');
+        navigate('/project');
       }
     } catch (error) {
       if (error.response && error.response.data) {
