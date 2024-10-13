@@ -67,13 +67,23 @@
 
 .upload-section-analysis-output-images {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 1rem;
   width: 100%;
 }
 
 .upload-section-analysis-output-images img {
   width: 45%;
+}
+
+.upload-section-analysis-output-object {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
 }
 
 .upload-section-detection-sliders {
@@ -84,6 +94,14 @@
   align-items: center;
   margin: auto;
   padding: 2rem;
+}
+
+.output-image-wrappers {
+  width: 90%;
+  height: fit-content;
+  justify-content: center;
+  display: flex;
+  gap: 1rem;
 }
 
 .upload-section-detection-sliders p {
