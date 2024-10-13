@@ -8,7 +8,6 @@ import ProjectHeader from "./components/ProjectHeader/ProjectHeader"
 import Projects from "./pages/Projects/Projects";
 import Manage from "./pages/ManageProject/Manage";
 import Analysis from './pages/Analysis/Analysis';
-import Profile from './pages/Profile/Profile';
 import Error from "./pages/Error/Error";
 import Starter from "./pages/misc/Starter";
 import LoginSignup from "./pages/Auth/LoginSignup";
@@ -31,13 +30,12 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/auth" element={<LoginSignup />} />
+        <Route path="/project" element={<Projects />} />
         <Route path="/home" element={<Layout />}>
           <Route index element={<Starter/>} />
-          <Route path="/home/project" element={<Projects />} />
           <Route path="/home/manage" element={<Manage />} />
           <Route path="/home/uploadimage" element={<UploadImage />} />
           <Route path="/home/analysis" element={<Analysis />} />
-          <Route path="/home/profile" element={<Profile />} />
         </Route>
         <Route path="/*" element={<Error />} />
       </Routes>

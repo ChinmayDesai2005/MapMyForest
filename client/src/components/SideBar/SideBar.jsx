@@ -1,6 +1,5 @@
 import './SideBar.css'
 import Logo from '../../assets/Logo_png.png';
-import { IoSettingsSharp } from "react-icons/io5";
 import {NavLink, useNavigate} from "react-router-dom"
 import { VscGithubProject } from "react-icons/vsc";
 import { RiImageAddFill,RiFileSettingsLine  } from "react-icons/ri";
@@ -16,9 +15,9 @@ function SideBar() {
             <h1 onClick={()=>(navigate('/'))}>MAPMYFOREST</h1>
         </div>
         <div className="RoutesLinkContainer">
-            <NavLink to={'/home/project'} activeclassname="active">
+            <NavLink to={'/home'} activeclassname="active">
                 <VscGithubProject className='linkIcon'/> 
-                <p>Project</p>
+                <p>Home</p>
             </NavLink>
             <NavLink to={'/home/manage'} activeclassname="active">
                 <RiFileSettingsLine  className='linkIcon'/> 
@@ -37,12 +36,6 @@ function SideBar() {
                 <p>Analysis</p>
             </NavLink>
         </div>
-        
-        <NavLink to={'/home/profile'} className="BottomSettingsContainer">
-            <IoSettingsSharp className='settings-icons'/>
-            <h6>Settings</h6>
-        </NavLink>
-        
     </div>
   )
 }
