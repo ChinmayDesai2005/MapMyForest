@@ -14,8 +14,8 @@ from routes.user_routes import register_user,login_user
 from routes.project_routes import create_project
 
 app = Flask(__name__)
-CORS(app)
-# CORS(app,origins=["http://localhost:5173"])
+# CORS(app)
+CORS(app, origins=["http://localhost:5173"])
 
 app.register_blueprint(treeEnum)
 app.register_blueprint(register_user)
