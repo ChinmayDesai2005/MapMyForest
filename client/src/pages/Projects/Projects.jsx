@@ -3,6 +3,8 @@ import './Projects.css';
 import ProjectCard from "../../components/misc/ProjectCard";
 import { ImPencil2 } from "react-icons/im";
 import { IoMdAdd } from "react-icons/io";
+import HomeHeader from "../../components/HomeHeader/HomeHeader";
+import Footer from "../../components/Footer/Footer";
 // import { FaSearch } from 'react-icons/fa';
 
 // Initial projects data
@@ -41,6 +43,27 @@ const initialProjects = [
     creationDate: "March 22, 2019",
     Status: "In Progress",
     selectedState: 'False'
+  },
+  {
+    id: 5,
+    name: "Wildlife Migration Study",
+    creationDate: "April 5, 2012",
+    Status: "Completed",
+    selectedState: 'False'
+  },
+  {
+    id: 6,
+    name: "Wildlife Migration Study",
+    creationDate: "April 5, 2012",
+    Status: "Completed",
+    selectedState: 'False'
+  },
+  {
+    id: 7,
+    name: "Wildlife Migration Study",
+    creationDate: "April 5, 2012",
+    Status: "Completed",
+    selectedState: 'False'
   }
 ];
 
@@ -66,7 +89,9 @@ function Projects() {
 
   return (
     <>
-      <div className="TopProjectDiv">
+    <HomeHeader/>
+      <section className="ProjectSection">
+        <div className="TopProjectDiv">
         <h3>Projects</h3>
         <div className="search-wrapper">
           <input 
@@ -102,6 +127,8 @@ function Projects() {
           Edit Project
         </button>
       </div>
+      </section>
+      <Footer />
     </>
   )
 }
