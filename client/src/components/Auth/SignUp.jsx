@@ -1,23 +1,24 @@
-import "./Main.css";
-import { FaFacebook, FaGoogle, FaLinkedin} from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axios from 'axios'; 
+import "./Main.css";
+import { FaFacebook, FaGoogle, FaLinkedin, FaEye, FaEyeSlash } from 'react-icons/fa'; // Add eye icons for password toggle
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 function SignUp() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
 
-  const handleSubmit = async(e) => {
-    e.preventDefault()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const userData = {
       username: username,
       email: email,
       password: password
-    }
+    };
     try {
       const response = await axios.post('http://localhost:5000/api/v1/user/register', userData);
 
@@ -33,15 +34,30 @@ function SignUp() {
       }
     }
   }
+
   return (
     <form method="post" onSubmit={handleSubmit}>
-      <input type="email" placeholder="Email" required value={email} onChange={(e) => setEmail(e.target.value)}/>
-      <input type="text" placeholder="Username" required value={username} onChange={(e) => setUsername(e.target.value)}/>
-      <input type="password" placeholder="Password" required  value={password} onChange={(e) => setPassword(e.target.value)}/>
+      <input type="email" placeholder="Email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+      <input type="text" placeholder="Username" required value={username} onChange={(e) => setUsername(e.target.value)} />
+      
+      <div className="password-input-container">
+        <input 
+          type={showPassword ? "text" : "password"} // Dynamically change input type
+          placeholder="Password" 
+          required 
+          value={password} 
+          onChange={(e) => setPassword(e.target.value)} 
+        />
+        <span onClick={() => setShowPassword(!showPassword)} className="toggle-password-icon">
+          {showPassword ? <FaEyeSlash /> : <FaEye />} {/* Toggle icon */}
+        </span>
+      </div>
+
       <button type="submit">Sign Up</button>
+
       <div className="social-login">
-        <p>Continue with</p> 
-        <div className="icon-container"> 
+        <p>Continue with</p>
+        <div className="icon-container">
           <a href="https://google.com" className="icon" aria-label="Google" target="_blank" rel="noopener noreferrer">
             <FaGoogle />
           </a>
