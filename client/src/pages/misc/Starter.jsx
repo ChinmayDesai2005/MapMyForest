@@ -2,13 +2,22 @@ import { Link } from "react-router-dom";
 import './Starter.css';
 import { UserState } from "../../Context/UserContext";
 import { useEffect } from "react";
+import MyLoader from "../../components/misc/MyLoader";
 
 function Starter() {
-  const {selectedProject} = UserState();
+  const {selectedProject,setSelectedProject} = UserState();
 
-  useEffect(()=>{
-    console.log(selectedProject)
-  })
+useEffect(() => {
+    const storedProject = JSON.parse(localStorage.getItem("selectedProject"));
+    if (storedProject) {
+      setSelectedProject(storedProject);
+    }
+  }, [setSelectedProject]);
+
+  if (!selectedProject) {
+    return <div><MyLoader/></div>;
+  }
+
 
   return (
     <div className="starter-container">

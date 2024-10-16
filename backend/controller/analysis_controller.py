@@ -44,3 +44,30 @@ def CreateNewOrUpdateAnalysis():
         'message': 'Analysis created or updated successfully',
         'updated_analysis': updated_analysis
     }), 200
+
+
+def fetchAnalysis():
+    data = request.get_json()
+
+    if not data or 'project_id' not in data:
+        return jsonify({
+            'error': 'Project ID is required',
+            'success': False
+        }), 400
+    
+    project_id = data.get('project_id')
+
+    analysis_json = analysis_collection.find_one({'project_id':project_id})
+
+    if analysis_json is None:
+        return jsonify({
+            'error': 'No analysis found for the provided project ID',
+            'success': False
+        }), 404
+    
+    analysis_json['_id'] = str(analysis_json['_id'])
+
+    return jsonify({
+        'message': 'Analysis fetched successfully',
+        'analysis_json': analysis_json
+    })
