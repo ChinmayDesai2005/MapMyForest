@@ -8,7 +8,7 @@ function AlternateSection ({ title, description, imageSrc, reverse }) {
       <div className="content">
         <h2 className="title">{title}</h2>
         <p className="description">{description}</p>
-        <GetStartedButton />
+       
       </div>
       <div className="image-container">
         <img src={imageSrc} alt={title} className="image" />
