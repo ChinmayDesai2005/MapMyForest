@@ -10,7 +10,6 @@ SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'your_jwt_secret_key')
 def authenticate(f):
     def wrapper(*args, **kwargs):
         token = request.cookies.get('accessToken')
-        print(f'{token}')
         
         if not token:
             return jsonify({'error': 'Authentication token is missing!'}), 401

@@ -57,6 +57,7 @@ function Projects() {
 
 const handleCardSelect = (project) => {
   setSelectedProject(project);
+  localStorage.setItem('selectedProject',JSON.stringify(project))
   navigate('/home')
 };
 
@@ -98,10 +99,6 @@ const handleCardSelect = (project) => {
         <button className="create-btn">
           <IoMdAdd className="action_button_icons" />
           Create New Project
-        </button>
-        <button className="edit-btn">
-          <ImPencil2 className="action_button_icons" />
-          Edit Project
         </button>
       </div>
       </section>
