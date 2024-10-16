@@ -49,7 +49,7 @@ def registerUser():
         'accessToken': token
     }))
 
-    response.set_cookie('accessToken', token, httponly=True, secure=True, max_age=7*24*60*60)
+    response.set_cookie('accessToken', token, max_age=7*24*60*60, path='/', domain=None, secure=False, httponly=False, samesite=None)
     return response,201
 
 
@@ -72,9 +72,9 @@ def loginUser():
         token = generate_jwt_token(user_data['_id'])
         user_data.pop('password', None)
 
-        response = jsonify({'message': f"Login successful {user_data['username']}", 'user': user_data,'accessToken': token})
+        response = make_response(jsonify({'message': f"Login successful {user_data['username']}", 'user': user_data,'accessToken': token}))
 
-        response.set_cookie('accessToken', token, httponly=True, secure=True, max_age=7*24*60*60)
+        response.set_cookie('accessToken', token,max_age=7*24*60*60, path='/', domain=None, secure=False, httponly=False, samesite=None)
         return response, 200
     else:
         return jsonify({'error': 'Invalid password'}), 401

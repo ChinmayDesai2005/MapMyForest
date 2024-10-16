@@ -26,6 +26,7 @@ function SignUp() {
 
       if (response.status === 201) {
         localStorage.setItem('MapMyForestUser',JSON.stringify(response.data.user))
+        localStorage.setItem('accessToken',JSON.stringify(response.data.accessToken))
         setUser(response.data.user)
         toast.success(response.data.message);
         navigate('/project');
