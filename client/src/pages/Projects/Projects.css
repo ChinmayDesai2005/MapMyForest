@@ -97,9 +97,10 @@
     transition: transform 0.3s;
 }
 
-.selected-card {
+.project-card:hover {
     background: var(--gradient);
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    transition: ease-in-out;
 
     h3,
     p,
