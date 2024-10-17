@@ -20,9 +20,9 @@
 
 .login-signup-form-container {
   flex: 1;
-  max-width: 60%;
+  max-width: 40%;
   background-color: white;
-  border-radius: 15px;
+  border-radius: 30px;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
   padding: 2rem;
 }
@@ -71,4 +71,57 @@
   font-size: 1.8rem;
   font-family: 'Outfit', sans-serif; 
   font-weight: 700;
+}
+
+
+/* Existing styles */
+
+/* Add media queries for smaller screens */
+@media (max-width: 768px) {
+  .login-signup-page {
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 5%; /* Reduce padding on smaller screens */
+  }
+
+  .login-signup-image {
+    max-width: 80%; /* Reduce image size on smaller screens */
+    margin-bottom: 2rem; /* Add margin between form and image */
+  }
+
+  .login-signup-form-container {
+    max-width: 90%; /* Let form take more width on smaller screens */
+    padding: 1.5rem; /* Adjust padding to fit smaller screens */
+  }
+
+  .login-signup-form-container h2 {
+    font-size: 1.5rem; /* Reduce font size for smaller screens */
+  }
+
+  .header-container {
+    flex-direction: column;
+    align-items: flex-start; /* Stack the header elements on smaller screens */
+  }
+
+  .brand-title {
+    font-size: 1.5rem; /* Adjust the font size of the brand title */
+  }
+
+  .logo {
+    width: 40px; /* Resize the logo slightly */
+  }
+}
+
+@media (max-width: 480px) {
+  .login-signup-page {
+    padding: 0 3%; /* Further reduce padding for very small screens */
+  }
+
+  .login-signup-form-container h2 {
+    font-size: 1.2rem; /* Further reduce heading font size */
+  }
+
+  .brand-title {
+    font-size: 1.2rem; /* Adjust the font size of the brand title */
+  }
 }
