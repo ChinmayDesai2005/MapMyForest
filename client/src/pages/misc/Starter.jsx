@@ -1,28 +1,30 @@
 import { Link } from "react-router-dom";
 import './Starter.css';
+import { UserState } from "../../Context/UserContext";
+import { useEffect } from "react";
+import MyLoader from "../../components/misc/MyLoader";
 
 function Starter() {
-  const project = {
-    id: 0,
-    name: "Amazon Rainforest Survey",
-    creationDate: "July 15, 2015",
-    Status: "In Progress",
-    selectedState: "True",
-    uploadedImages: [
-      // Example image URLs or base64-encoded strings
-      "https://example.com/image1.jpg",
-      "https://example.com/image2.jpg",
-      "https://example.com/image3.jpg",
-    ],
-  };
+  const {selectedProject,setSelectedProject} = UserState();
+
+useEffect(() => {
+    const storedProject = JSON.parse(localStorage.getItem("selectedProject"));
+    if (storedProject) {
+      setSelectedProject(storedProject);
+    }
+  }, [setSelectedProject]);
+
+  if (!selectedProject) {
+    return <div><MyLoader/></div>;
+  }
+
 
   return (
     <div className="starter-container">
       <div className="project-starter-card">
-        <h1 className="project-title">{project.name}</h1>
-        <p><strong>Creation Date:</strong> {project.creationDate}</p>
-        <p><strong>Status:</strong> {project.Status}</p>
-        <p><strong>Selected State:</strong> {project.selectedState}</p>
+        <h1 className="project-title">{selectedProject.project_name}</h1>
+        <p><strong>Creation Date:</strong> {selectedProject.created_at}</p>
+        <p><strong>Selected State:</strong> {selectedProject.location}</p>
 
         <div className="navigation-buttons">
           <Link to="/home/manage" className="manage-link">
@@ -38,10 +40,10 @@ function Starter() {
         <div className="uploaded-images-section">
           <h2>Uploaded Images</h2>
           <div className="image-grid">
-            {project.uploadedImages.length > 0 ? (
-              project.uploadedImages.map((image, index) => (
+            {selectedProject.tree_images.length > 0 ? (
+              selectedProject.tree_images.map((image, index) => (
                 <div key={index} className="image-card">
-                  <img src={image} alt={`Uploaded ${index + 1}`} />
+                  <img src={image.image_url} alt={`Uploaded ${index + 1}`} />
                 </div>
               ))
             ) : (

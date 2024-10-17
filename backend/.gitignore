@@ -1,2 +1,12 @@
-.env
+.idea/
+.vscode/
+.venv*/
+venv*/
 __pycache__/
+dist/
+.coverage*
+htmlcov/
+.tox/
+docs/_build/
+.env
+backend/routes/__pycache__/user_routes.cpython-312.pyc

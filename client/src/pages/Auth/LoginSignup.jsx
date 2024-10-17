@@ -14,8 +14,8 @@ function LoginSignup() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("userInfo"));
-    if (user) navigate("/home");
+    const user = JSON.parse(localStorage.getItem("MapMyForestUser"));
+    if (user) navigate("/project");
   }, [navigate]);
 
   return (

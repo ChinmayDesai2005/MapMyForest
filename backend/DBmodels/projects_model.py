@@ -15,7 +15,7 @@ project_collection = db.get_collection('projects')
 project_collection.create_index('project_name',unique=True)
 
 class Project:
-    def __init__(self, project_name, location, tree_images, videoURL, user_id):
+    def __init__(self, project_name, location, user_id,tree_images=[], videoURL=""):
         self.project_name = project_name
         self.location = location
         self.tree_images = tree_images
