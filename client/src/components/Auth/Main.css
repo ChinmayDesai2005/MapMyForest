@@ -9,22 +9,26 @@ input {
     padding: 0.75rem;
     font-size: 1rem; 
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 30px;
 }
 
-button {
-    padding: 0.75rem; 
-    font-size: 2rem; 
-    background-color: #007a05; 
-    color: #000000; 
-    border: 1px solid #ccc; 
-    border-radius: 8px;
+form button {
+    padding: 0 30px;
+    width: auto;
+    height: 50px;
+    border-radius: 30px; /* This should work */
+    font-weight: 600;
+    font-size: 1.15rem;
+    background-color: #99fc76;
+    color: black;
+    transition: background-color 0.2s ease-in-out;
     cursor: pointer;
-    transition: background-color 0.2s ease; 
+    border: none;
 }
 
-button:hover {
-    background-color: #e0e0e0; 
+form button:hover {
+    background-color: #007a05;
+    color: white;
 }
 
 .social-login {
@@ -55,3 +59,21 @@ button:hover {
 .icon-container .icon:hover {
     background-color: #f0f0f0; 
 }
+
+
+.password-input-container {
+    position: relative;
+  }
+  
+  .password-input-container input {
+    width: 100%;
+    padding-right: 3rem; /* To make space for the eye icon */
+  }
+  
+  .toggle-password-icon {
+    position: absolute;
+    top: 45%;
+    right: 1rem;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
