@@ -112,3 +112,9 @@
         line-height: normal;
     }
 }
+
+.disabled-link {
+    pointer-events: none;
+    color: var(--grey2);
+    opacity: 0.5;
+}

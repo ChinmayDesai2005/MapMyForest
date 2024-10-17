@@ -27,7 +27,7 @@ function SideBar() {
                 <RiImageAddFill className='linkIcon'/>
                 <p>Add Image</p>
             </NavLink>
-            <NavLink to={'/random'}>
+            <NavLink to={'/random'} aria-disabled className="disabled-link">
                 <AiOutlineVideoCameraAdd className='linkIcon'/>
                 <p>Add Video</p>
             </NavLink>

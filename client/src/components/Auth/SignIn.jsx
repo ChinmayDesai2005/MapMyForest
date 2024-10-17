@@ -20,10 +20,11 @@ function SignIn() {
       const response = await axios.post("http://localhost:5000/api/v1/user/login", {
         email,
         password
-      });
+      },{withCredentials: true});
 
       if (response.status === 200) {
         localStorage.setItem('MapMyForestUser',JSON.stringify(response.data.user))
+        localStorage.setItem('accessToken',JSON.stringify(response.data.accessToken))
         setUser(response.data.user)
         toast.success(response.data.message);
         navigate('/project');
