@@ -1,5 +1,6 @@
 .analysis-container {
     max-width: 900px;
+    min-height: 200px;
     margin: 0 auto;
     padding: 20px;
 }
