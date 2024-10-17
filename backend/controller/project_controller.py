@@ -6,8 +6,7 @@ def createProject():
     data = request.get_json()
     project_name = data.get('project_name') 
     location = data.get('location')
-    tree_images = data.get('tree_images', [])
-    videoURL = data.get('videoURL')
+    
 
     user_id = request.user_id
 
@@ -17,16 +16,20 @@ def createProject():
     new_project = Project(
         project_name=project_name,
         location=location,
-        tree_images=tree_images,
-        videoURL=videoURL,
-        user_id=user_id  
+        user_id=user_id , 
+        tree_images=[],
+        videoURL=""
     )
 
     project_collection.insert_one(new_project.to_dict())
+    
+    latest_created_project = project_collection.find_one({"project_name": project_name})
+
+    latest_created_project['_id'] = str(latest_created_project['_id'])
 
     return jsonify({
         'message': f'Project "{project_name}" created successfully!',
-        'project': new_project.to_dict()
+        'project': latest_created_project
     }), 201
 
 def accessAllProject():
@@ -50,6 +53,31 @@ def accessAllProject():
         'project_group': project_group
     }), 201
 
+
+def fetchProject():
+    data = request.get_json()
+    project_id = data.get('project_id')
+
+    if not project_id:
+        return jsonify({'error': 'No project id found'}), 400
+    
+    try:
+        user_object_id = ObjectId(project_id)
+    except:
+        return jsonify({'error': 'Invalid project ID format'}), 400
+
+    project_data = project_collection.find_one({'_id': user_object_id})
+
+    if not project_data:
+        return jsonify({'error': 'User not found'}), 404
+
+    project_data['_id'] = str(project_data['_id'])
+
+    return jsonify({
+        'message': 'User found successfully',
+        'project_data': project_data
+    }), 200
+
 def findOneProjectAndUpdate():
     data = request.get_json()
     project_id = data.get('_id')
@@ -60,8 +88,8 @@ def findOneProjectAndUpdate():
     update_data = {
         'project_name': data.get('project_name'),
         'location': data.get('location'),
-        'tree_images': data.get('tree_images'),
-        'videoURL': data.get('videoURL')
+        'tree_images': data.get('tree_images',[]),
+        'videoURL': data.get('videoURL',"")
     }
 
     update_data = {k: v for k, v in update_data.items() if v is not None}

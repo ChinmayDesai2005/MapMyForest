@@ -1,5 +1,6 @@
 from flask import request,jsonify,make_response
 from DBmodels.user_model import user_collection,User;
+from bson import ObjectId
 import jwt
 from datetime import datetime, timedelta, timezone
 import os
@@ -78,3 +79,27 @@ def loginUser():
         return response, 200
     else:
         return jsonify({'error': 'Invalid password'}), 401
+    
+
+def accessUser():
+    user_id = request.user_id
+
+    if not user_id:
+        return jsonify({'error': 'No user id found'}), 400
+    
+    try:
+        user_object_id = ObjectId(user_id)
+    except:
+        return jsonify({'error': 'Invalid user ID format'}), 400
+
+    profile_data = user_collection.find_one({'_id': user_object_id})
+
+    if not profile_data:
+        return jsonify({'error': 'User not found'}), 404
+
+    profile_data['_id'] = str(profile_data['_id'])
+
+    return jsonify({
+        'message': 'User found successfully',
+        'user_profile': profile_data
+    }), 200

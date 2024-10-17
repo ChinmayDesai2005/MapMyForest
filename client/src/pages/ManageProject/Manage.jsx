@@ -1,14 +1,52 @@
+import { UserState } from '../../Context/UserContext';
 import './Manage.css';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
+import axios from 'axios'
+
+
 function Manage() {
+  const accessToken = JSON.parse(localStorage.getItem("accessToken"));
   const [formData, setFormData] = useState({
-    projectName: '',
+    project_name: '',
     location: '',
-    startDate: '',
-    endDate: '',
-    photos: null,
-    videos: null,
+    created_at: '',
+    tree_images: [],
+    videoURL: '',
   });
+
+  const {selectedProject} = UserState();
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0];
+  };
+
+  useEffect(() => {
+    const project_id = selectedProject?._id
+    const fetchProject = async () => {
+      const config = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      },
+      withCredentials: true
+    }
+      try {
+        const response = await axios.post('http://localhost:5000/api/v1/project/fetchproject',{project_id},config);
+        console.log(response)
+        setFormData({
+          project_name: response.data.project_data.project_name,
+          location: response.data.project_data.location,
+          tree_images: response.data.project_data.tree_images || [],
+          videoURL: response.data.project_data.videoURL || '',
+          created_at: formatDate(response.data.project_data.created_at)
+        });
+      } catch (error) {
+        console.error("Error fetching project data", error);
+      }
+    };
+
+    fetchProject();
+  }, []);
 
     const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -34,7 +72,7 @@ function Manage() {
           <input
             type="text"
             name="projectName"
-            value={formData.projectName}
+            value={formData.project_name}
             onChange={handleChange}
             placeholder="Enter Project Name"
           />
@@ -52,16 +90,17 @@ function Manage() {
         </div>
 
         <div className="form-group">
-          <label>Start Date</label>
+          <label>Creation Date</label>
           <input
             type="date"
             name="Date of the Project"
-            value={formData.startDate}
+            value={formData.created_at}
             onChange={handleChange}
+            readOnly
           />
         </div>
 
-        <div className="form-group media-upload">
+        {/* <div className="form-group media-upload">
   <div className="file-upload">
     <label>Drop Image or Browse</label>
     <input
@@ -81,7 +120,7 @@ function Manage() {
       accept="video/*"
     />
   </div>
-</div>
+</div> */}
 
         <button type="submit" className="submit-btn">
           Save & Continue
