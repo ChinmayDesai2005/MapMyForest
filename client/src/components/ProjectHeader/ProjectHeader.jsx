@@ -3,7 +3,6 @@ import {  FaBell } from 'react-icons/fa'; // Import icons from react-icons
 import { IoSettingsSharp } from 'react-icons/io5';
 import { FaRegUserCircle } from "react-icons/fa";
 import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Profile from '../../pages/Profile/Profile'
 
@@ -31,14 +30,6 @@ function ProjectHeader() {
           <Modal.Title>User Profile</Modal.Title>
         </Modal.Header>
         <Modal.Body><Profile /></Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
       </Modal>
       </div>
       </header>
