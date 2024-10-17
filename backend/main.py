@@ -14,8 +14,9 @@ from routes.user_routes import register_user,login_user,create_new_or_update_ana
 from routes.project_routes import create_project, access_all_project, find_one_project_and_update, add_or_update_image, add_new_video, fetch_project
 
 app = Flask(__name__)
+# CORS(app)
+# CORS(app, origins=["http://localhost:5173"])
 CORS(app,supports_credentials=True)
-# CORS(app,origins=["http://localhost:5173"])
 
 app.register_blueprint(treeEnum)
 app.register_blueprint(register_user)
