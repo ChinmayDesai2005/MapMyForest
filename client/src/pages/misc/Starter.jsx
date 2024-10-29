@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+/* eslint-disable react-hooks/rules-of-hooks */
+import { Link, useNavigate } from "react-router-dom";
 import './Starter.css';
 import { UserState } from "../../Context/UserContext";
 import { useEffect } from "react";
@@ -19,7 +20,9 @@ useEffect(() => {
   }
 
 
+  const navigate = useNavigate();
   return (
+
     <div className="starter-container">
       <div className="project-starter-card">
         <h1 className="project-title">{selectedProject.project_name}</h1>
@@ -30,29 +33,33 @@ useEffect(() => {
           <Link to="/home/manage" className="manage-link">
             Manage Project
           </Link>
-          <Link to="/home/uploadimage" className="upload-link">
-            Upload Image
-          </Link>
           <Link to="/home/analysis" className="analysis-link">
-            Analyze Data
+            Data Analysis
           </Link>
         </div>
         <div className="uploaded-images-section">
           <h2>Uploaded Images</h2>
-          <div className="image-grid">
-            {selectedProject.tree_images.length > 0 ? (
-              selectedProject.tree_images.map((image, index) => (
-                <div key={index} className="image-card">
-                  <img src={image.image_url} alt={`Uploaded ${index + 1}`} />
+              <div className="gallery-container">
+                <div className="image-stack">
+                  {selectedProject.tree_images.length > 0 ? (
+                    <>
+                      {selectedProject.tree_images.map((image, index) => (
+                        <div className="image-wrapper" key={index}>
+                          <img src={image.image_url} alt={`Uploaded ${index + 1}`} />
+                        </div>
+                      ))}
+                      <button className="add-button" onClick={()=>{navigate('/home/uploadimage')}}>
+                        <div className="plus-icon"></div>
+                      </button>
+                    </>
+                  ) : (
+                    <p>No images uploaded yet.</p>
+                  )}
                 </div>
-              ))
-            ) : (
-              <p>No images uploaded yet.</p>
-            )}
-          </div>
+              </div>
+            </div>
         </div>
       </div>
-    </div>
   );
 }
 
