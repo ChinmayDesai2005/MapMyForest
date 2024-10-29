@@ -1,4 +1,4 @@
-from flask import request,jsonify,make_response
+from flask import request,jsonify,make_response, Response
 from DBmodels.user_model import user_collection,User;
 from bson import ObjectId
 import jwt
@@ -103,3 +103,15 @@ def accessUser():
         'message': 'User found successfully',
         'user_profile': profile_data
     }), 200
+
+def logoutUser():
+    user_id = request.user_id
+
+    if not user_id:
+        return jsonify({'error': 'No user id found'}), 400
+    
+    response = make_response(jsonify({
+        'message': f'User Logged Out Succesfull',
+    }))
+    response.delete_cookie('accessToken')
+    return response,200
