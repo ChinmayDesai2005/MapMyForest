@@ -75,7 +75,7 @@ const handleCardSelect = (project) => {
 };
 
 const newProjectCreation = async() => {
-  const location = `${selectedState}, ${selectedLocation}`;
+  const location = `${selectedLocation}, ${selectedState}`;
   const config = {
       headers: {
         Authorization: `Bearer ${accessToken}`
@@ -100,7 +100,7 @@ const newProjectCreation = async() => {
 const handleStateChange = (e) => {
     const stateId = e.target.value;
     setSelectedState(stateId);
-    const selectedStateObj = states.find(state => state.id === stateId);
+    const selectedStateObj = states.find(state => state.name === stateId);
     setLocations(selectedStateObj?.GoverningBodies || []);
     setSelectedLocation("");  // Reset location on state change
   };
@@ -163,12 +163,12 @@ const handleStateChange = (e) => {
                   <Form.Select id="state" value={selectedState} onChange={handleStateChange}>
                     <option value="">Select State</option>
                     {states.map((state) => (
-                      <option key={state.id} value={state.id}>{state.name}</option>
+                      <option key={state.id} value={state.name}>{state.name}</option>
                     ))}
                   </Form.Select>
                 </div>
                 <div className="input_project_div">
-                  <label htmlFor="location">Location</label>
+                  <label htmlFor="location">Governing Body</label>
                   <Form.Select id="location" value={selectedLocation} onChange={handleLocationChange} disabled={!selectedState}>
                     <option value="">Select Government Body</option>
                     {locations.map((location) => (
