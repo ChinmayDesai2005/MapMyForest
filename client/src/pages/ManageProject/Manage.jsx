@@ -32,7 +32,6 @@ function Manage() {
     }
       try {
         const response = await axios.post('http://localhost:5000/api/v1/project/fetchproject',{project_id},config);
-        console.log(response)
         setFormData({
           project_name: response.data.project_data.project_name,
           location: response.data.project_data.location,
@@ -58,8 +57,6 @@ function Manage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log(formData);
   };
 
   return (
@@ -75,17 +72,19 @@ function Manage() {
             value={formData.project_name}
             onChange={handleChange}
             placeholder="Enter Project Name"
+            readOnly
           />
         </div>
 
         <div className="form-group">
-          <label>Location</label>
+          <label>Governing Authority</label>
           <input
             type="text"
             name="location"
             value={formData.location}
             onChange={handleChange}
             placeholder="Location of project"
+            readOnly
           />
         </div>
 
