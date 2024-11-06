@@ -1,13 +1,15 @@
-import { Link } from "react-router-dom";
+/* eslint-disable react-hooks/rules-of-hooks */
+import { Link, useNavigate } from "react-router-dom";
 import './Starter.css';
 import { UserState } from "../../Context/UserContext";
 import { useEffect } from "react";
 import MyLoader from "../../components/misc/MyLoader";
 
 function Starter() {
-  const {selectedProject,setSelectedProject} = UserState();
+  const navigate = useNavigate();
+  const { selectedProject, setSelectedProject } = UserState();
 
-useEffect(() => {
+  useEffect(() => {
     const storedProject = JSON.parse(localStorage.getItem("selectedProject"));
     if (storedProject) {
       setSelectedProject(storedProject);
@@ -15,9 +17,12 @@ useEffect(() => {
   }, [setSelectedProject]);
 
   if (!selectedProject) {
-    return <div><MyLoader/></div>;
+    return <div><MyLoader /></div>;
   }
 
+  const handleNavigate = () => {
+    navigate('/home/uploadimage');
+  };
 
   return (
     <div className="starter-container">
@@ -30,25 +35,29 @@ useEffect(() => {
           <Link to="/home/manage" className="manage-link">
             Manage Project
           </Link>
-          <Link to="/home/uploadimage" className="upload-link">
-            Upload Image
-          </Link>
           <Link to="/home/analysis" className="analysis-link">
-            Analyze Data
+            Data Analysis
           </Link>
         </div>
         <div className="uploaded-images-section">
           <h2>Uploaded Images</h2>
-          <div className="image-grid">
-            {selectedProject.tree_images.length > 0 ? (
-              selectedProject.tree_images.map((image, index) => (
-                <div key={index} className="image-card">
-                  <img src={image.image_url} alt={`Uploaded ${index + 1}`} />
-                </div>
-              ))
-            ) : (
-              <p>No images uploaded yet.</p>
-            )}
+          <div className="gallery-container">
+            <div className="image-stack">
+              {selectedProject.tree_images.length > 0 ? (
+                <>
+                  {selectedProject.tree_images.map((image, index) => (
+                    <div className="image-wrapper" key={index}>
+                      <img src={image.image_url} alt={`Uploaded ${index + 1}`} />
+                    </div>
+                  ))}
+                  <button className="add-button" onClick={handleNavigate}>
+                    <div className="plus-icon"></div>
+                  </button>
+                </>
+              ) : (
+                <p>No images uploaded yet.</p>
+              )}
+            </div>
           </div>
         </div>
       </div>

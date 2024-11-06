@@ -12,7 +12,8 @@ import { useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Spinner from 'react-bootstrap/Spinner';
-// import { FaSearch } from 'react-icons/fa';
+import states from '../../utils/states.json'
+import Form from 'react-bootstrap/Form';
 
 
 function Projects() {
@@ -25,7 +26,9 @@ function Projects() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [project_name,setProjectname] = useState("");
-  const [location,setLocation] = useState("");
+  const [locations, setLocations] = useState([]);
+  const [selectedState, setSelectedState] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("");
 
 
   const {user,setSelectedProject} = UserState();
@@ -72,6 +75,7 @@ const handleCardSelect = (project) => {
 };
 
 const newProjectCreation = async() => {
+  const location = `${selectedLocation}, ${selectedState}`;
   const config = {
       headers: {
         Authorization: `Bearer ${accessToken}`
@@ -92,6 +96,18 @@ const newProjectCreation = async() => {
       setLoading(false);
     }
   }
+
+const handleStateChange = (e) => {
+    const stateId = e.target.value;
+    setSelectedState(stateId);
+    const selectedStateObj = states.find(state => state.name === stateId);
+    setLocations(selectedStateObj?.GoverningBodies || []);
+    setSelectedLocation("");  // Reset location on state change
+  };
+
+  const handleLocationChange = (e) => {
+    setSelectedLocation(e.target.value);
+  };
 
   return (
     <>
@@ -143,9 +159,23 @@ const newProjectCreation = async() => {
             <input type="text" id="project_name" value={project_name} onChange={(e)=>setProjectname(e.target.value)} placeholder="Enter your project name"/>
           </div>
           <div className="input_project_div">
-            <label htmlFor="">Site Location</label>
-            <input type="text" id="location" value={location} onChange={(e)=>setLocation(e.target.value)} placeholder="Location of your tree enumeration site"/>
-          </div>
+                  <label htmlFor="state">State</label>
+                  <Form.Select id="state" value={selectedState} onChange={handleStateChange}>
+                    <option value="">Select State</option>
+                    {states.map((state) => (
+                      <option key={state.id} value={state.name}>{state.name}</option>
+                    ))}
+                  </Form.Select>
+                </div>
+                <div className="input_project_div">
+                  <label htmlFor="location">Governing Body</label>
+                  <Form.Select id="location" value={selectedLocation} onChange={handleLocationChange} disabled={!selectedState}>
+                    <option value="">Select Government Body</option>
+                    {locations.map((location) => (
+                      <option key={location.id} value={location.name}>{location.name}</option>
+                    ))}
+                  </Form.Select>
+                </div>
           </div>
         </Modal.Body>
         <Modal.Footer>
