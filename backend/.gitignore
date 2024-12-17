@@ -10,3 +10,4 @@ htmlcov/
 docs/_build/
 .env
 backend/routes/__pycache__/user_routes.cpython-312.pyc
+lightning_logs
