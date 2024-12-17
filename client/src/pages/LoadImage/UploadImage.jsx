@@ -87,7 +87,7 @@ function UploadImage() {
             />
           </div>
         </div>
-        <div className="upload-section-detection-sliders">
+        {/* <div className="upload-section-detection-sliders">
           <p>Confidence: {detectionConf}</p>
           <input
             type="range"
@@ -111,7 +111,7 @@ function UploadImage() {
             id="detection-iou"
             onChange={(e) => setDetectionIOU(e.target.value)}
           />
-        </div>
+        </div> */}
         <div className="uploadImageSectionFileSubmitButton">
           <button
             className="uploadImageSectionSubmitButton"
