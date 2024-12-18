@@ -166,3 +166,37 @@ def AddNewVideo():
         'message': 'Video URL updated successfully',
         'updated_project': updated_video_project
     }), 200
+
+def AddAnnotatedImages():
+    data = request.get_json()
+    project_id = data.get('project_id')
+    annotated_data = data.get('annotated_images')
+
+    if not project_id:
+        return jsonify({'error': 'Project ID is required'}), 400
+    
+    if not ObjectId.is_valid(project_id):
+        return jsonify({'error': 'Invalid project ID'}), 400
+    
+    if not annotated_data or not isinstance(annotated_data, list):
+        return jsonify({'error': 'Annotated images should be a valid list'}), 400
+    
+    for entry in annotated_data:
+        if not all(key in entry for key in ['url', 'count', 'percentage']):
+            return jsonify({'error': 'Each annotated image must have url, count, and percentage'}), 400
+        
+    updated_project = project_collection.find_one_and_update(
+        {'_id': ObjectId(project_id)},
+        {'$push': {'annotated_images': {'$each': annotated_data}}},
+        return_document=True
+    )
+
+    if not updated_project:
+        return jsonify({'error': 'Project with this ID does not exist'}), 404
+    
+    updated_project['_id'] = str(updated_project['_id'])
+
+    return jsonify({
+        'message': 'Annotated images added successfully',
+        'updated_project': updated_project
+    }), 200
