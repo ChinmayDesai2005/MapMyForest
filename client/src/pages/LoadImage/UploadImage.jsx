@@ -3,6 +3,9 @@ import { useState } from "react";
 import { MdOutlineFileUpload } from "react-icons/md";
 import ReactMarkdown from "react-markdown";
 import "./upload.css";
+import { toast } from "react-toastify";
+import Spinner from "react-bootstrap/Spinner";
+import axios from "axios";
 
 function UploadImage() {
   const [selectedName, setSelectedName] = useState("");
@@ -12,8 +15,10 @@ function UploadImage() {
   const [responseObjects, setResponseObjects] = useState([]); // {"annotated": base64, "count": int}
   const [detectionConf, setDetectionConf] = useState(0.15);
   const [detectionIOU, setDetectionIOU] = useState(0.5);
+  const [responseStatus, setResponseStatus] = useState("None");
 
   const handleImages = async (e) => {
+    setResponseStatus("None");
     const files = Array.from(e.target.files);
     const base64Images = await Promise.all(
       files.map((file) =>
@@ -25,9 +30,50 @@ function UploadImage() {
     setSelectedName(`${files.length} file(s) selected`);
   };
 
+  const saveDataToProject = async (responseData) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    };
+    console.log(responseData);
+    const toSend = {
+      project_id: JSON.parse(localStorage.getItem("selectedProject"))._id,
+      annonated_images: JSON.stringify(responseData),
+    };
+    try {
+      // const response = await fetch(
+      //   "http://localhost:5000/api/v1/project/addannotatedimages",
+      //   {
+      //     method: "POST",
+      //     body: JSON.stringify(toSend),
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   }
+      // );
+
+      const response = axios.post(
+        "http://localhost:5000/api/v1/project/addannotatedimages",
+        toSend,
+        config
+      );
+
+      // const responseData = await response.json();
+    } catch (error) {
+      console.error(error.message);
+      toast.error("Error saving to DB. Please try again later.");
+    }
+  };
+
   const handleSubmit = async () => {
     setResponseObjects([]);
-    console.log(detectionConf, detectionIOU);
+    setResponseStatus("Wait");
+    // console.log(detectionConf, detectionIOU);
     const endpoint = "http://localhost:5000/enumerate";
     try {
       let formData = new FormData();
@@ -51,8 +97,12 @@ function UploadImage() {
 
       setResponseObjects(responseData);
       // setResponseCounts(newResponseCounts);
+      setResponseStatus("Done");
+      saveDataToProject(responseData);
     } catch (error) {
+      setResponseStatus("None");
       console.error(error.message);
+      toast.error("An error has occurred. Please try again later.");
     }
   };
 
@@ -120,7 +170,20 @@ function UploadImage() {
             Submit
           </button>
         </div>
-        {responseObjects.length > 0 && (
+        {/* {responseStatus === "None" && (
+          <div className="UploadSection_Analysis_Output_MarkDown">
+            <ReactMarkdown>{`#### Add Images to get started.`}</ReactMarkdown>
+          </div>
+        )} */}
+        {responseStatus === "Wait" && (
+          <div className="UploadSection_Analysis_Output_MarkDown">
+            <ReactMarkdown>{`### Computing... Please Wait...`}</ReactMarkdown>
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          </div>
+        )}
+        {responseStatus === "Done" && responseObjects.length > 0 && (
           <div className="UploadSection_Analysis_Output_MarkDown">
             <ReactMarkdown>{`## **Tree Enumeration Results:**`}</ReactMarkdown>
             <div className="upload-section-analysis-output-images">
@@ -129,11 +192,13 @@ function UploadImage() {
                   key={index}
                   className="upload-section-analysis-output-object"
                 >
-                  <ReactMarkdown>
-                    {`### Image ${index + 1}: **${
+                  <ReactMarkdown
+                    children={`## Image ${index + 1} \n #### Count : **${
                       responseObjects[index]["count"]
-                    }** trees found`}
-                  </ReactMarkdown>
+                    }** trees \n #### Area Covered: **${
+                      responseObjects[index]["percentage"]
+                    }%**`}
+                  />
                   <div className="output-image-wrappers">
                     <img
                       src={"data:image/jpg;base64," + image}
@@ -141,8 +206,7 @@ function UploadImage() {
                     />
                     <img
                       src={
-                        "data:image/jpg;base64," +
-                        responseObjects[index]["annotated"]
+                        "data:image/jpg;base64," + responseObjects[index]["url"]
                       }
                       alt={`annotated-image-${index}`}
                     />

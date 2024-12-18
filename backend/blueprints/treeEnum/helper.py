@@ -1,12 +1,11 @@
 from concurrent.futures import ThreadPoolExecutor
-from PIL import Image
-import os
-import base64
-from io import BytesIO
 from ultralytics import YOLO
-import numpy as np
 from deepforest import visualize
 from deepforest import main
+import os, base64, pandas
+from io import BytesIO
+from PIL import Image
+import numpy as np
 
 MODEL_PATH = "model/best (2).pt"
 
@@ -25,6 +24,12 @@ def annotate_image(image, boxes_df):
     buffered = BytesIO()
     annotated.save(buffered, format="JPEG")
     return base64.b64encode(buffered.getvalue()).decode('utf-8')
+
+def calculate_green_cover(boxes_df, original_width, original_height):
+    boxes_df["box_area"] = (boxes_df["xmax"] - boxes_df["xmin"]) * (boxes_df["ymax"] - boxes_df["ymin"])
+    total_box_area = boxes_df["box_area"].sum()
+    image_area = original_width * original_height
+    return round((total_box_area / image_area) * 100, 4)
 
 # Assume `predict_trees(image)` is your YOLO prediction function
 def predict_trees(image):
@@ -45,7 +50,8 @@ def predict_on_chunk(model, image_base64_chunk):
         image = load_image(image_base64)
         prediction = predict_trees_df(model, image)
         annotated = annotate_image(image, prediction)
-        predictions.append({"annotated": annotated, "count": len(prediction)})
+        green_cover = calculate_green_cover(prediction, image.width, image.height)
+        predictions.append({"url": annotated, "count": len(prediction), "percentage": green_cover})
     return predictions
 
 def parallel_predictions(model, images_base64, num_workers=4):
