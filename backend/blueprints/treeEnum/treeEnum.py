@@ -2,6 +2,8 @@ from flask import Blueprint, request
 from PIL import Image
 import base64, io, json
 from ultralytics import YOLO
+from deepforest import main
+from blueprints.treeEnum.helper import parallel_predictions, get_model
 
 treeEnum = Blueprint("treeEnum", __name__, template_folder="templates")
 
@@ -10,32 +12,17 @@ def index():
     return "Tree Enumeration Model!"
 
 @treeEnum.post("/enumerate")
-def enumerate():
+def enumerateTrees():
     # TODO Clear previous output
 
-    # Get image from request
-    image = request.form['imageb64']
+    # Get image from request        
+    images = json.loads(request.form['imagesb64'])
     conf = float(request.form['confidence'])
     iou = float(request.form['iou'])
-    image = base64.b64decode(image)
-    image = Image.open(io.BytesIO(image))
-    image.convert('RGB').save("blueprints/treeEnum/input/input.jpg")
-    
-    # Run model
-    model = YOLO("model/best (2).pt")
-    results = model.predict("blueprints/treeEnum/input/input.jpg", conf=conf, imgsz=640, augment=True, nms=True, iou=iou)
 
-    # Save image
-    for result in results:
-        result.save(filename=f"blueprints/treeEnum/output/result.jpg")
-
-    # print(results) 
-
-    # Create B64 for result image
-    with open("./blueprints/treeEnum/output/result.jpg", "rb") as f:
-        annotatedImage = base64.b64encode(f.read()).decode('utf-8')
+    predictions = parallel_predictions(get_model(), images)
 
     #Generate response
-    response = {"annotated": annotatedImage, "count": len(results[0].boxes)}
+    # response = {"annotated": annotatedImage, "count": len(results[0].boxes)}
 
-    return json.dumps(response)
+    return json.dumps(predictions)
