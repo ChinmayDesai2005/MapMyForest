@@ -9,4 +9,6 @@ htmlcov/
 .tox/
 docs/_build/
 .env
+controller/__pycache__/
+DBmodels/__pycache__/
 backend/routes/__pycache__/user_routes.cpython-312.pyc
