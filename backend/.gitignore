@@ -12,3 +12,4 @@ docs/_build/
 controller/__pycache__/
 DBmodels/__pycache__/
 backend/routes/__pycache__/user_routes.cpython-312.pyc
+lightning_logs
