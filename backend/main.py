@@ -11,7 +11,7 @@ PORT = os.environ['PORT']
 # Blueprints
 from blueprints.treeEnum.treeEnum import treeEnum
 from routes.user_routes import register_user,login_user,create_new_or_update_analysis, fetch_analysis, access_user, logout_user
-from routes.project_routes import create_project, access_all_project, find_one_project_and_update, add_or_update_image, add_new_video, fetch_project
+from routes.project_routes import create_project, access_all_project, find_one_project_and_update, add_or_update_image, add_new_video, fetch_project, add_annotated_images
 
 app = Flask(__name__)
 CORS(app,supports_credentials=True)
@@ -30,6 +30,7 @@ app.register_blueprint(find_one_project_and_update)
 app.register_blueprint(add_or_update_image)
 app.register_blueprint(fetch_project)
 app.register_blueprint(add_new_video)
+app.register_blueprint(add_annotated_images)
 
 if __name__ == "__main__":
     app.run(port=PORT, debug=True)
