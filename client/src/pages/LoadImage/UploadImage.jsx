@@ -43,7 +43,7 @@ function UploadImage() {
     console.log(responseData);
     const toSend = {
       project_id: JSON.parse(localStorage.getItem("selectedProject"))._id,
-      annonated_images: JSON.stringify(responseData),
+      annotated_images: JSON.stringify(responseData),
     };
     try {
       // const response = await fetch(
