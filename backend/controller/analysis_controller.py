@@ -1,12 +1,24 @@
 from flask import flash,request,jsonify
+from DBmodels.projects_model import project_collection,Project
 from DBmodels.analysis_model import analysis_collection,Analysis
 from bson import ObjectId
+from controller.helperLLM import generate_Analysis;
 
 def CreateNewOrUpdateAnalysis():
     data = request.get_json()
     project_id = data.get('project_id')
-    analysis = data.get('analysis')
     user_id = request.user_id
+
+    new_project_id = ObjectId(project_id)
+
+    projectData = project_collection.find_one({'_id': new_project_id})
+
+    if not projectData:
+        return jsonify({'error': 'Project not found'}), 404
+    
+    projectData['_id'] = str(projectData['_id'])
+
+    analysis = generate_Analysis(projectData)
 
     if not analysis_collection.find_one({'project_id':project_id}):
         new_analysis = Analysis(
