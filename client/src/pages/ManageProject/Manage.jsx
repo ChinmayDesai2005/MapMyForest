@@ -9,6 +9,7 @@ function Manage() {
   const [formData, setFormData] = useState({
     project_name: '',
     location: '',
+    jurisdiction: '',
     created_at: '',
     tree_images: [],
     videoURL: '',
@@ -35,6 +36,7 @@ function Manage() {
         setFormData({
           project_name: response.data.project_data.project_name,
           location: response.data.project_data.location,
+          jurisdiction: response.data.project_data.jurisdiction,
           tree_images: response.data.project_data.tree_images || [],
           videoURL: response.data.project_data.videoURL || '',
           created_at: formatDate(response.data.project_data.created_at)
@@ -77,11 +79,23 @@ function Manage() {
         </div>
 
         <div className="form-group">
-          <label>Governing Authority</label>
+          <label>Location (Latitude, Longitude)</label>
           <input
             type="text"
             name="location"
             value={formData.location}
+            onChange={handleChange}
+            placeholder="Location of project"
+            readOnly
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Governing Authority</label>
+          <input
+            type="text"
+            name="location"
+            value={formData.jurisdiction}
             onChange={handleChange}
             placeholder="Location of project"
             readOnly
@@ -121,9 +135,9 @@ function Manage() {
   </div>
 </div> */}
 
-        <button type="submit" className="submit-btn">
+        {/* <button type="submit" className="submit-btn">
           Save & Continue
-        </button>
+        </button> */}
       </form>
     </div>
   )

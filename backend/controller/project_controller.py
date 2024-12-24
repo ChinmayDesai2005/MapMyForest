@@ -6,9 +6,14 @@ def createProject():
     data = request.get_json()
     project_name = data.get('project_name') 
     location = data.get('location')
+    jurisdiction = data.get('jurisdiction')
+    currentStatus = "Incomplete"
     
 
     user_id = request.user_id
+
+    if not all([project_name, location, jurisdiction, user_id]):
+        return jsonify({'error': 'Missing required fields'}), 400
 
     if project_collection.find_one({"project_name": project_name}):
         return jsonify({'error': 'Project by same name exists'}), 400
@@ -16,15 +21,13 @@ def createProject():
     new_project = Project(
         project_name=project_name,
         location=location,
+        jurisdiction=jurisdiction,
+        currentStatus=currentStatus,
         user_id=user_id , 
-        tree_images=[],
-        videoURL=""
     )
 
     project_collection.insert_one(new_project.to_dict())
-    
     latest_created_project = project_collection.find_one({"project_name": project_name})
-
     latest_created_project['_id'] = str(latest_created_project['_id'])
 
     return jsonify({
@@ -39,9 +42,6 @@ def accessAllProject():
         return jsonify({'error': 'User Id not found please login again'}), 400
     
     project_group = list(project_collection.find({'user_id': user_id}))
-
-    print (f'{project_group}')
-
     if not project_group:
         return jsonify({'error':'No Project found for the particular user'}), 200
     
@@ -52,7 +52,6 @@ def accessAllProject():
         'message': f'Project for the particular {user_id} found',
         'project_group': project_group
     }), 201
-
 
 def fetchProject():
     data = request.get_json()
@@ -124,7 +123,7 @@ def AddorUpdateImages():
 
     updated_project = project_collection.find_one_and_update(
         {'_id': ObjectId(project_id)},
-        {'$push': {'tree_images': {'$each': new_images}}},
+        {'$push': {'tree_images': {'$each': new_images}}, '$set': {'currentStatus': 'In Progress'}},
         return_document=True
     )
 
@@ -198,5 +197,31 @@ def AddAnnotatedImages():
 
     return jsonify({
         'message': 'Annotated images added successfully',
+        'updated_project': updated_project
+    }), 200
+
+def completedStatus():
+    data = request.get_json()
+    project_id = data.get('project_id')
+
+    if not project_id:
+        return jsonify({'error': 'Project ID is required'}), 400
+    
+    if not ObjectId.is_valid(project_id):
+        return jsonify({'error': 'Invalid project ID'}), 400
+
+    updated_project = project_collection.find_one_and_update(
+        {'_id': ObjectId(project_id)},
+        {'$set': {'currentStatus': 'Completed'}},
+        return_document=True
+    )
+
+    if not updated_project:
+        return jsonify({'error': 'Project with this ID does not exist'}), 404
+
+    updated_project['_id'] = str(updated_project['_id'])
+
+    return jsonify({
+        'message': 'Project status updated to Completed',
         'updated_project': updated_project
     }), 200
