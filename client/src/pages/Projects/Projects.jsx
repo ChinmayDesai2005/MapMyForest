@@ -27,6 +27,7 @@ function Projects() {
   const handleShow = () => setShow(true);
   const [project_name,setProjectname] = useState("");
   const [locations, setLocations] = useState([]);
+  const [location,setLocation] = useState("");
   const [selectedState, setSelectedState] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
 
@@ -75,7 +76,7 @@ const handleCardSelect = (project) => {
 };
 
 const newProjectCreation = async() => {
-  const location = `${selectedLocation}, ${selectedState}`;
+  const jurisdiction = `${selectedLocation}, ${selectedState}`;
   const config = {
       headers: {
         Authorization: `Bearer ${accessToken}`
@@ -84,7 +85,7 @@ const newProjectCreation = async() => {
     }
     try {
       setLoading(true); 
-      const response = await axios.post("http://localhost:5000/api/v1/project/createproject",{project_name,location},config);
+      const response = await axios.post("http://localhost:5000/api/v1/project/createproject",{project_name, location, jurisdiction},config);
       setSelectedProject(response.data.project)
       localStorage.setItem('selectedProject',JSON.stringify(response.data.project))
       toast.success(response.data.message);
@@ -157,6 +158,10 @@ const handleStateChange = (e) => {
           <div className="input_project_div">
             <label htmlFor="">Project Name</label>
             <input type="text" id="project_name" value={project_name} onChange={(e)=>setProjectname(e.target.value)} placeholder="Enter your project name"/>
+          </div>
+          <div className="input_project_div">
+            <label htmlFor="">Location (latitude, longitude)</label>
+            <input type="text" id="project_name" value={location} onChange={(e)=>setLocation(e.target.value)} placeholder="16.4, 72.1"/>
           </div>
           <div className="input_project_div">
                   <label htmlFor="state">State</label>

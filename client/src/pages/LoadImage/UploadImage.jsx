@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
-import { MdOutlineFileUpload } from "react-icons/md";
+import { useState,useEffect } from "react";
+import { MdOutlineFileUpload,MdLock } from "react-icons/md";
 import ReactMarkdown from "react-markdown";
 import "./upload.css";
 import { toast } from "react-toastify";
@@ -16,6 +16,14 @@ function UploadImage() {
   const [detectionConf, setDetectionConf] = useState(0.15);
   const [detectionIOU, setDetectionIOU] = useState(0.5);
   const [responseStatus, setResponseStatus] = useState("None");
+  const [currentStatus, setCurrentStatus] = useState("None");
+
+  useEffect(() => {
+    const project = JSON.parse(localStorage.getItem("selectedProject"));
+    if (project && project.currentStatus) {
+      setCurrentStatus(project.currentStatus);
+    }
+  }, []);
 
   const handleImages = async (e) => {
     setResponseStatus("None");
@@ -122,6 +130,12 @@ function UploadImage() {
   return (
     <>
       <section className="uploadImageSection">
+        {currentStatus === "In Progress" && (
+          <div className="lock-overlay">
+            <MdLock size={100} />
+            <h2>Another process is currently running</h2>
+          </div>
+        )}
         <div className="uploadImageSectionParent">
           <div className="uploadImageSectionFileUpload">
             <MdOutlineFileUpload size={50} />
@@ -134,88 +148,19 @@ function UploadImage() {
               className="default-file-input"
               onChange={handleImages}
               multiple
+              disabled={currentStatus === "In Progress"}
             />
           </div>
         </div>
-        {/* <div className="upload-section-detection-sliders">
-          <p>Confidence: {detectionConf}</p>
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.05"
-            defaultValue="0.15"
-            className="slider"
-            id="detection-conf"
-            onChange={(e) => setDetectionConf(e.target.value)}
-          />
-          <br />
-          <p>Intersection over Union: {detectionIOU}</p>
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.05"
-            defaultValue="0.5"
-            className="slider"
-            id="detection-iou"
-            onChange={(e) => setDetectionIOU(e.target.value)}
-          />
-        </div> */}
         <div className="uploadImageSectionFileSubmitButton">
           <button
             className="uploadImageSectionSubmitButton"
             onClick={handleSubmit}
+            disabled={currentStatus === "In Progress"}
           >
             Submit
           </button>
         </div>
-        {/* {responseStatus === "None" && (
-          <div className="UploadSection_Analysis_Output_MarkDown">
-            <ReactMarkdown>{`#### Add Images to get started.`}</ReactMarkdown>
-          </div>
-        )} */}
-        {responseStatus === "Wait" && (
-          <div className="UploadSection_Analysis_Output_MarkDown">
-            <ReactMarkdown>{`### Computing... Please Wait...`}</ReactMarkdown>
-            <Spinner animation="border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </Spinner>
-          </div>
-        )}
-        {responseStatus === "Done" && responseObjects.length > 0 && (
-          <div className="UploadSection_Analysis_Output_MarkDown">
-            <ReactMarkdown>{`## **Tree Enumeration Results:**`}</ReactMarkdown>
-            <div className="upload-section-analysis-output-images">
-              {selectedImages.map((image, index) => (
-                <div
-                  key={index}
-                  className="upload-section-analysis-output-object"
-                >
-                  <ReactMarkdown
-                    children={`## Image ${index + 1} \n #### Count : **${
-                      responseObjects[index]["count"]
-                    }** trees \n #### Area Covered: **${
-                      responseObjects[index]["percentage"]
-                    }%**`}
-                  />
-                  <div className="output-image-wrappers">
-                    <img
-                      src={"data:image/jpg;base64," + image}
-                      alt={`uploaded-image-${index}`}
-                    />
-                    <img
-                      src={
-                        "data:image/jpg;base64," + responseObjects[index]["url"]
-                      }
-                      alt={`annotated-image-${index}`}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
       </section>
     </>
   );
