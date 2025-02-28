@@ -1,41 +1,124 @@
 .analysis-container {
-    max-width: 900px;
-    min-height: 200px;
-    margin: 0 auto;
-    padding: 20px;
+  max-width: 900px;
+  min-height: 200px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
 .analysis-container h1,
 .analysis-container h2,
 .analysis-container h3 {
-    color: #4CAF50;
-    margin-bottom: 20px;
+  color: #4caf50;
+  margin-bottom: 20px;
 }
 
 .analysis-container img {
-    max-width: 100%;
-    height: auto;
-    margin: 20px auto;
+  max-width: 100%;
+  height: auto;
+  margin: 20px auto;
 }
 
 .analysis-container table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
 }
 
 .analysis-container table,
 th,
 td {
-    border: 1px solid #ddd;
-    padding: 8px;
+  border: 1px solid #ddd;
+  padding: 8px;
 }
 
 .analysis-container th {
-    background-color: #f4f4f4;
-    text-align: left;
+  background-color: #f4f4f4;
+  text-align: left;
 }
 
 .analysis-container td {
-    background-color: #fafafa;
+  background-color: #fafafa;
+}
+
+.auxiliary-report-information {
+  width: 100%;
+}
+
+.report-title {
+  font-family: "Outfit", sans-serif;
+  font-weight: 500;
+  font-size: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.report-title span {
+  font-weight: 700;
+  font-size: 2rem;
+  color: var(--dark-green);
+}
+
+.report-info {
+  width: 50%;
+  gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  font-family: "Outfit", sans-serif;
+  font-size: 1.2rem;
+}
+
+.report-info span {
+  /* color: red; */
+  font-weight: 700;
+}
+
+.report-info span.red {
+  color: rgb(255, 54, 54);
+}
+
+.report-info span.green {
+  color: var(--dark-green);
+}
+
+.info-map-wrapper {
+  margin-top: 0.75rem;
+  width: 100%;
+  display: flex;
+}
+
+.report-map {
+  padding: 0.75rem;
+  height: 48vh;
+  width: 50%;
+
+  @media print {
+    height: 30vh;
+  }
+}
+
+.report-map .leaflet-container {
+  height: 100%;
+  width: 100%;
+  border-radius: 30px;
+}
+
+.download-report-button {
+  background-color: var(--white-blue);
+  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border: 1px solid #242424;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+
+  @media print {
+    display: none;
+  }
+}
+
+@page {
+  size: auto;
+  /* Chrome sets own margins, we change these printer settings */
+  margin: 15mm 15mm 15mm 15mm;
 }
