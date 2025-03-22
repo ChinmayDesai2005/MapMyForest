@@ -1,18 +1,22 @@
 from flask import flash,request,jsonify
 from DBmodels.projects_model import project_collection,Project
 from bson import ObjectId
+import json, requests
 
 def createProject():
     data = request.get_json()
     project_name = data.get('project_name') 
     location = data.get('location')
     jurisdiction = data.get('jurisdiction')
+    project_area = data.get("project_area")
+    project_intention = data.get("project_intention")
+    custom_prompt = data.get("custom_prompt")
     currentStatus = "Incomplete"
     
 
     user_id = request.user_id
 
-    if not all([project_name, location, jurisdiction, user_id]):
+    if not all([project_name, location, jurisdiction, user_id, project_area, project_intention]):
         return jsonify({'error': 'Missing required fields'}), 400
 
     if project_collection.find_one({"project_name": project_name}):
@@ -23,6 +27,9 @@ def createProject():
         location=location,
         jurisdiction=jurisdiction,
         currentStatus=currentStatus,
+        project_area=project_area,
+        project_intention=project_intention,
+        custom_prompt=custom_prompt,
         user_id=user_id , 
     )
 
@@ -169,7 +176,7 @@ def AddNewVideo():
 def AddAnnotatedImages():
     data = request.get_json()
     project_id = data.get('project_id')
-    annotated_data = data.get('annotated_images')
+    annotated_data = json.loads(data.get('annotated_data'))
 
     if not project_id:
         return jsonify({'error': 'Project ID is required'}), 400
@@ -177,13 +184,15 @@ def AddAnnotatedImages():
     if not ObjectId.is_valid(project_id):
         return jsonify({'error': 'Invalid project ID'}), 400
     
+    print(annotated_data, type(annotated_data))
+
     if not annotated_data or not isinstance(annotated_data, list):
         return jsonify({'error': 'Annotated images should be a valid list'}), 400
     
     for entry in annotated_data:
         if not all(key in entry for key in ['url', 'count', 'percentage']):
             return jsonify({'error': 'Each annotated image must have url, count, and percentage'}), 400
-        
+
     updated_project = project_collection.find_one_and_update(
         {'_id': ObjectId(project_id)},
         {'$push': {'annotated_images': {'$each': annotated_data}}},
@@ -194,6 +203,12 @@ def AddAnnotatedImages():
         return jsonify({'error': 'Project with this ID does not exist'}), 404
     
     updated_project['_id'] = str(updated_project['_id'])
+
+    toSend = {'project_id': project_id, 'user_id': str(request.user_id)}
+    headers = {"Content-Type": "application/json"}
+    print(toSend)
+    response = requests.post('http://localhost:5000/api/v1/project/analysis', json=toSend, headers=headers)
+    print(response.text)
 
     return jsonify({
         'message': 'Annotated images added successfully',

@@ -19,10 +19,11 @@ def enumerateTrees():
     images = json.loads(request.form['imagesb64'])
     conf = float(request.form['confidence'])
     iou = float(request.form['iou'])
+    patch_size = int(request.form['patch_size'])
 
-    predictions = parallel_predictions(get_model(), images)
+    predictions = parallel_predictions(get_model(), images, patch_size)
 
-    #Generate response
+    # Generate response
     # response = {"annotated": annotatedImage, "count": len(results[0].boxes)}
 
     return json.dumps(predictions)

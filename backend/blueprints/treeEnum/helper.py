@@ -38,28 +38,28 @@ def predict_trees(image):
     predictions = model.predict(image, conf=0.1, imgsz=640, augment=True, nms=True, iou=0.5)
     return predictions
 
-def predict_trees_df(model, image, patch_size=250):
+def predict_trees_df(model, image, patch_size):
     return model.predict_tile(image=np.array(image), patch_size=patch_size)
 
 def load_image(image_base64):
     return Image.open(BytesIO(base64.b64decode(image_base64)))
 
-def predict_on_chunk(model, image_base64_chunk):
+def predict_on_chunk(model, image_base64_chunk, patch_size):
     predictions = []
     for image_base64 in image_base64_chunk:
         image = load_image(image_base64)
-        prediction = predict_trees_df(model, image)
+        prediction = predict_trees_df(model, image, patch_size)
         annotated = annotate_image(image, prediction)
         green_cover = calculate_green_cover(prediction, image.width, image.height)
         predictions.append({"url": annotated, "count": len(prediction), "percentage": green_cover})
     return predictions
 
-def parallel_predictions(model, images_base64, num_workers=4):
+def parallel_predictions(model, images_base64, patch_size=200, num_workers=4):
     chunk_size = max(len(images_base64) // num_workers, 1)
     chunks = [images_base64[i:i + chunk_size] for i in range(0, len(images_base64), chunk_size)]
 
     with ThreadPoolExecutor(max_workers=num_workers) as executor:
-        results = list(executor.map(lambda chunk: predict_on_chunk(model, chunk), chunks))
+        results = list(executor.map(lambda chunk: predict_on_chunk(model, chunk, patch_size), chunks))
     return [item for sublist in results for item in sublist]
 
 # Example usage

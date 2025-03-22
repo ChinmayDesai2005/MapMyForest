@@ -25,12 +25,12 @@ def logout():
     return logoutUser()
 
 @create_new_or_update_analysis.route('/api/v1/project/analysis',methods=['POST'])
-@authenticate
+# @authenticate
 def CreateOrUpdateAnalysis(): 
     return CreateNewOrUpdateAnalysis()
 
 @fetch_analysis.route('/api/v1/project/fetchAnalysis',methods=['POST'])
-@authenticate
+# @authenticate
 def FetchAnalysis():
     return fetchAnalysis()
 
