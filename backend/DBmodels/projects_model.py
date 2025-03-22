@@ -15,7 +15,7 @@ project_collection = db.get_collection('projects')
 project_collection.create_index('project_name',unique=True)
 # ["Incomplete", "In Progress", "Completed"]
 class Project:
-    def __init__(self, project_name, location , jurisdiction, currentStatus ,user_id, tree_images=None, tree_types=None, videoURL=""):
+    def __init__(self, project_name, location , jurisdiction, currentStatus ,user_id, project_area=None, custom_prompt="", tree_images=None, tree_types=None, videoURL="", project_intention="deforestation"):
         self.project_name = project_name
         self.location = location
         self.jurisdiction = jurisdiction
@@ -26,6 +26,9 @@ class Project:
         self.videoURL= videoURL
         self.created_at = datetime.now()
         self.user_id = user_id
+        self.project_intention = project_intention
+        self.project_area = project_area
+        self.custom_prompt = custom_prompt
 
     def add_annotatedimage_data(self, url, count, percentage):
         annotated_image = {
@@ -46,5 +49,8 @@ class Project:
             'tree_types': self.tree_types,
             'annotated_images': self.annotated_images,
             'videoURL': self.videoURL,
-            'user_id': self.user_id 
+            'user_id': self.user_id,
+            'project_area': self.project_area,
+            'project_intention': self.project_intention,
+            'custom_prompt': self.custom_prompt
         }

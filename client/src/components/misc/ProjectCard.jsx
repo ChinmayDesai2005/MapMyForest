@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-import { FaCircle } from 'react-icons/fa'; 
+import { FaCircle } from "react-icons/fa";
 
-function ProjectCard({project,handleCardSelect}) {
+function ProjectCard({ project, handleCardSelect }) {
   //   const getStatusColor = () => {
   //   switch (project.Status.toLowerCase()) {
   //     case 'in progress':
@@ -16,20 +16,19 @@ function ProjectCard({project,handleCardSelect}) {
   // };
 
   return (
-     <div 
-      className={`project-card`} 
-      onClick={() => handleCardSelect(project)}
-    >
+    <div className={`project-card`} onClick={() => handleCardSelect(project)}>
       <div className="project-card-header">
         <h3>{project.project_name}</h3>
-        <p>Creation Date: {project.created_at}</p>
+        <p>Location: {project.location}</p>
       </div>
       <div className="project_card_footer">
-        <p>Status: <span className={`status`}>{project.Status}</span></p>
+        <p>
+          Status: <span className={`status`}>{project.currentStatus}</span>
+        </p>
         <FaCircle className="status-icon" style={{ color: "#61FF00" }} />
       </div>
     </div>
-  )
+  );
 }
 
-export default ProjectCard
+export default ProjectCard;

@@ -1,5 +1,19 @@
-@import url('./variable.css');
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+@import url("./variable.css");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+
+@media print {
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .printable-content {
+    width: 100%;
+    height: auto;
+    overflow: visible !important;
+    page-break-inside: avoid !important;
+    display: block !important;
+  }
+}
 
 * {
   margin: 0;

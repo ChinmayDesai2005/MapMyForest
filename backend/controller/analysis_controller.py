@@ -7,7 +7,8 @@ from controller.helperLLM import generate_Analysis;
 def CreateNewOrUpdateAnalysis():
     data = request.get_json()
     project_id = data.get('project_id')
-    user_id = request.user_id
+    # user_id = request.user_id
+    user_id = data.get('user_id')
 
     new_project_id = ObjectId(project_id)
 
@@ -18,7 +19,15 @@ def CreateNewOrUpdateAnalysis():
     
     projectData['_id'] = str(projectData['_id'])
 
-    analysis = generate_Analysis(projectData)
+    analysis = generate_Analysis({
+                                    'location': projectData['location'], 
+                                    'count': projectData['annotated_images'][0]['count'],
+                                    'percentage': projectData['annotated_images'][0]['percentage'],
+                                    'jurisdiction': projectData['jurisdiction'],
+                                    'project_intention': projectData['project_intention'],
+                                    'custom_prompt': projectData['custom_prompt'],
+                                    'project_area': projectData['project_area']
+                                })
 
     if not analysis_collection.find_one({'project_id':project_id}):
         new_analysis = Analysis(
