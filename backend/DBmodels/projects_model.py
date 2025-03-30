@@ -15,7 +15,7 @@ project_collection = db.get_collection('projects')
 project_collection.create_index('project_name',unique=True)
 # ["Incomplete", "In Progress", "Completed"]
 class Project:
-    def __init__(self, project_name, location , jurisdiction, currentStatus ,user_id, project_area=None, custom_prompt="", tree_images=None, tree_types=None, videoURL="", project_intention="deforestation"):
+    def __init__(self, project_name, location , jurisdiction, currentStatus ,user_id, project_area=None, custom_prompt="", tree_images=None, tree_types=None, videoURL="", project_intention=""):
         self.project_name = project_name
         self.location = location
         self.jurisdiction = jurisdiction
