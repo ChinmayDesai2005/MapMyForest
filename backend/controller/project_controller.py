@@ -94,6 +94,12 @@ def findOneProjectAndUpdate():
     update_data = {
         'project_name': data.get('project_name'),
         'location': data.get('location'),
+        'jurisdiction': data.get('jurisdiction'),
+        'created_at': data.get('created_at'),
+        'currentStatus': data.get('currentStatus'),
+        'project_area': data.get('project_area'),
+        'project_intention': data.get('project_intention'),
+        'custom_prompt': data.get('custom_prompt'),
         'tree_images': data.get('tree_images',[]),
         'videoURL': data.get('videoURL',"")
     }
