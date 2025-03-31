@@ -194,7 +194,7 @@ function Projects() {
                 <ProjectCard
                   key={project._id}
                   project={project}
-                  onClick={() => handleCardSelect(project)}
+                  handleCardSelect={handleCardSelect}
                 />
               ))}
             </div>
@@ -209,10 +209,10 @@ function Projects() {
                   position={project.location.split(",").map(Number)}
                 >
                   <Popup>
-                    <div>
+                    <div className="MapContainer">
                       <h4>{project.project_name}</h4>
                       <p>Created on: {new Date(project.created_at).toDateString()}</p>
-                      <button className="create-btn" onClick={() => handleCardSelect(project)}>View Project</button>
+                      <button onClick={() => handleCardSelect(project)}>View Project</button>
                     </div>
                   </Popup>
                 </Marker>
