@@ -76,6 +76,7 @@ function Manage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setFormData({ ...formData, project_area: `${selectedArea.amount} ${selectedArea.unit}` });
     try {
       const config = {
         headers: { Authorization: `Bearer ${accessToken}` },
