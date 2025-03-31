@@ -241,3 +241,44 @@
 .size_input_wrapper input {
   border-radius: 30px 0 0 30px;
 }
+
+
+.MapContainer {
+  h4 {
+    font-family: Outfit;
+    font-size: 1.5rem !important;
+    font-style: normal;
+    font-weight: 600 !important;
+    line-height: normal;
+    color: var(--dark-purple);
+  }
+
+  p {
+    font-family: Outfit;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    color: var(--dark-purple);
+  }
+
+  button {
+    background: var(--dark-purple);
+    color: #fff;
+    font-family: Outfit;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    display: flex;
+    padding: 0.9375rem 4.375rem;
+    justify-content: center;
+    align-items: center;
+    gap: 0.625rem;
+    flex-shrink: 0;
+    border-radius: 1.0625rem;
+    border: 1px solid #dfeaf2;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    margin: 1rem 0;
+  }
+}
