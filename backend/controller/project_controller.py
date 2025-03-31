@@ -1,6 +1,7 @@
 from flask import flash,request,jsonify
 from DBmodels.projects_model import project_collection,Project
 from bson import ObjectId
+from pymongo import ReturnDocument
 import json, requests
 
 def createProject():
@@ -86,36 +87,41 @@ def fetchProject():
 
 def findOneProjectAndUpdate():
     data = request.get_json()
+    print(data)
     project_id = data.get('_id')
 
     if not ObjectId.is_valid(project_id):
         return jsonify({'error': 'Project with this id does not exists'})
     
-    update_data = {
-        'project_name': data.get('project_name'),
-        'location': data.get('location'),
-        'jurisdiction': data.get('jurisdiction'),
-        'created_at': data.get('created_at'),
-        'currentStatus': data.get('currentStatus'),
-        'project_area': data.get('project_area'),
-        'project_intention': data.get('project_intention'),
-        'custom_prompt': data.get('custom_prompt'),
-        'tree_images': data.get('tree_images',[]),
-        'videoURL': data.get('videoURL',"")
-    }
+    allowed_fields = [
+        'project_name', 'location', 'jurisdiction', 'currentStatus',
+        'project_area', 'project_intention', 'custom_prompt', 'tree_images', 'videoURL'
+    ]
+    update_data = {field: data[field] for field in allowed_fields if field in data}
+    print(update_data)
 
-    update_data = {k: v for k, v in update_data.items() if v is not None}
+    if not update_data:
+        return jsonify({'error': 'No valid fields to update'}), 400
 
     update_project = project_collection.find_one_and_update(
-        {'_id':ObjectId(project_id)},
+        {'_id': ObjectId(project_id)},
         {'$set': update_data},
-        return_document=True
-        )
+        return_document=ReturnDocument.AFTER
+    )
     
     if not update_project:
         return jsonify({'error': 'Project with this ID does not exist'}), 404
-    
+
     update_project['_id'] = str(update_project['_id'])
+
+    toSend = {'project_id': project_id, 'user_id': str(request.user_id)}
+    headers = {"Content-Type": "application/json"}
+    try:
+        response = requests.post('http://localhost:5000/api/v1/project/analysis', json=toSend, headers=headers)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        return jsonify({'message': 'Project updated, but analysis request failed', 'error': str(e)}), 500
+
     
     return jsonify({
         'message': 'Project Updated Successfully',
