@@ -188,15 +188,37 @@ function Projects() {
         {loading ? (
           <MyLoader />
         ) : (
-          <div className="projects-grid">
-            {projectsToShow.map((project) => (
-              <ProjectCard
-                key={project._id}
-                project={project}
-                handleCardSelect={handleCardSelect}
+          <>
+            <div className="projects-grid">
+              {projectsToShow.map((project) => (
+                <ProjectCard
+                  key={project._id}
+                  project={project}
+                  onClick={() => handleCardSelect(project)}
+                />
+              ))}
+            </div>
+            <MapContainer center={[23, 80]} zoom={5} scrollWheelZoom={true} style={{ height: "400px", width: "100%" }}>
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-            ))}
-          </div>
+              {projects.map((project) => (
+                <Marker
+                  key={project._id}
+                  position={project.location.split(",").map(Number)}
+                >
+                  <Popup>
+                    <div>
+                      <h4>{project.project_name}</h4>
+                      <p>Created on: {new Date(project.created_at).toDateString()}</p>
+                      <button className="create-btn" onClick={() => handleCardSelect(project)}>View Project</button>
+                    </div>
+                  </Popup>
+                </Marker>
+              ))}
+            </MapContainer>
+          </>
         )}
         <div className="actions_button_div">
           <button className="create-btn" onClick={handleShow}>
