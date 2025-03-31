@@ -39,7 +39,12 @@ def registerUser():
 
     user_collection.insert_one(new_user.to_dict())
 
-    token = generate_jwt_token(new_user['_id'])
+    registered_user = user_collection.find_one({'email': email})
+    user_id = ObjectId(registered_user['_id'])
+
+    print(registered_user,user_id)
+
+    token = generate_jwt_token(user_id)
 
     response = make_response(jsonify({
         'message': f'User {username} registered Successfully!',
