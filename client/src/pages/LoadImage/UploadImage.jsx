@@ -15,7 +15,7 @@ function UploadImage() {
   const [responseObjects, setResponseObjects] = useState([]); // {"annotated": base64, "count": int}
   const [detectionConf, setDetectionConf] = useState(0.15);
   const [detectionIOU, setDetectionIOU] = useState(0.5);
-  const [detectionPatchSize, setDetectionPatchSize] = useState(3500);
+  const [detectionPatchSize, setDetectionPatchSize] = useState(10000);
   const [responseStatus, setResponseStatus] = useState("None");
 
   const handleImages = async (e) => {
@@ -216,7 +216,9 @@ function UploadImage() {
                       responseObjects[index]["count"]
                     }** trees \n #### Area Covered: **${
                       responseObjects[index]["percentage"]
-                    }%**`}
+                    }%** \n #### Possible Tree Species: **${Object.keys(
+                      responseObjects[index]["classifications"]
+                    )}**`}
                   />
                   <div className="output-image-wrappers">
                     <img
