@@ -15,7 +15,7 @@ function UploadImage() {
   const [responseObjects, setResponseObjects] = useState([]); // {"annotated": base64, "count": int}
   const [detectionConf, setDetectionConf] = useState(0.15);
   const [detectionIOU, setDetectionIOU] = useState(0.5);
-  const [detectionPatchSize, setDetectionPatchSize] = useState(400);
+  const [detectionPatchSize, setDetectionPatchSize] = useState(3500);
   const [responseStatus, setResponseStatus] = useState("None");
 
   const handleImages = async (e) => {
@@ -83,17 +83,33 @@ function UploadImage() {
       formData.append("iou", detectionIOU);
       formData.append("patch_size", detectionPatchSize);
 
-      const response = await fetch(endpoint, {
-        method: "POST",
-        body: formData,
+      const toSend = {
+        images: JSON.stringify(selectedImages),
+        confidence: detectionConf,
+        iou: detectionIOU,
+        patch_size: detectionPatchSize,
+      };
+
+      const config = {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Headers": "*",
         },
-      });
+      };
 
-      const responseData = await response.json();
-      console.log(responseData);
+      // const response = await fetch(endpoint, {
+      //   method: "POST",
+      //   body: ,
+      //   headers: {
+      //     "Access-Control-Allow-Origin": "*",
+      //     "Access-Control-Allow-Headers": "*",
+      //   },
+      // });
+
+      const response = await axios.post(endpoint, toSend, config);
+
+      const responseData = await response.data;
+      console.log(response);
       // Extract response images and tree counts
       // const newResponseImages = responseData.map((res) => res["annotated"]);
       // const newResponseCounts = responseData.map((res) => res["count"]);

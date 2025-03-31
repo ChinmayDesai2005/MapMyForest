@@ -16,12 +16,18 @@ def enumerateTrees():
     # TODO Clear previous output
 
     # Get image from request        
-    images = json.loads(request.form['imagesb64'])
-    conf = float(request.form['confidence'])
-    iou = float(request.form['iou'])
-    patch_size = int(request.form['patch_size'])
+    # images = json.loads(request.form['imagesb64'])
+    # conf = float(request.form['confidence'])
+    # iou = float(request.form['iou'])
+    # patch_size = int(request.form['patch_size'])
 
-    predictions = parallel_predictions(get_model(), images, patch_size)
+    data = request.get_json()
+    print(data.keys())
+
+    # if not all(key in data for key in ['images', 'patch_size']):
+    #     return {"error" : "Required Fields missing!"}, 400
+
+    predictions = parallel_predictions(get_model(), json.loads(data['images']), int(data['patch_size']))
 
     # Generate response
     # response = {"annotated": annotatedImage, "count": len(results[0].boxes)}
