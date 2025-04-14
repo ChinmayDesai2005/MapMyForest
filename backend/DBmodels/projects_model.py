@@ -30,11 +30,12 @@ class Project:
         self.project_area = project_area
         self.custom_prompt = custom_prompt
 
-    def add_annotatedimage_data(self, url, count, percentage):
+    def add_annotatedimage_data(self, url, count, percentage, classifications):
         annotated_image = {
             'url': url,
             'count': count,
-            'percentage': percentage
+            'percentage': percentage,
+            'classifications': classifications
         }
         self.annotated_images.append(annotated_image)
 

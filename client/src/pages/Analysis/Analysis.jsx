@@ -163,6 +163,7 @@ function Analysis() {
 
   useEffect(() => {
     fetchAnalysis();
+    console.log(selectedProject.annotated_images);
   }, []);
 
   return (

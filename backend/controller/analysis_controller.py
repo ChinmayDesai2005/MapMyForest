@@ -22,6 +22,7 @@ def CreateNewOrUpdateAnalysis():
     analysis = generate_Analysis({
                                     'location': projectData['location'], 
                                     'count': projectData['annotated_images'][0]['count'],
+                                    'classifications': set(projectData['annotated_images'][0]['classifications']),
                                     'percentage': projectData['annotated_images'][0]['percentage'],
                                     'jurisdiction': projectData['jurisdiction'],
                                     'project_intention': projectData['project_intention'],

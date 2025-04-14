@@ -3,8 +3,7 @@ from PIL import Image
 import base64, io, json
 from ultralytics import YOLO
 from deepforest import main
-from blueprints.treeEnum.helper import parallel_predictions, get_model
-
+from blueprints.treeEnum.helper import parallel_predictions
 treeEnum = Blueprint("treeEnum", __name__, template_folder="templates")
 
 @treeEnum.route("/")
@@ -27,7 +26,7 @@ def enumerateTrees():
     # if not all(key in data for key in ['images', 'patch_size']):
     #     return {"error" : "Required Fields missing!"}, 400
 
-    predictions = parallel_predictions(get_model(), json.loads(data['images']), int(data['patch_size']))
+    predictions = parallel_predictions(json.loads(data['images']), int(data['patch_size']))
 
     # Generate response
     # response = {"annotated": annotatedImage, "count": len(results[0].boxes)}
