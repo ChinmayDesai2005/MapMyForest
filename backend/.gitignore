@@ -14,3 +14,4 @@ DBmodels/__pycache__/
 backend/routes/__pycache__/user_routes.cpython-312.pyc
 lightning_logs
 backend/routes/__pycache__/user_routes.cpython-310.pyc
+*.ckpt
