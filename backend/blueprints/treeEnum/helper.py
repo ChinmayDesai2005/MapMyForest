@@ -1,9 +1,8 @@
 from concurrent.futures import ThreadPoolExecutor
-from ultralytics import YOLO
 # from deepforest import visualize
 # from deepforest import main
 # from deepforest.model import CropModel
-from torchvision import transforms
+# from torchvision import transforms
 import os, base64
 import pandas as pd
 from io import BytesIO
@@ -84,7 +83,7 @@ import requests
 #     return predictions
 
 def predict_on_colab(image_base64, patch_size):
-    endpoint = "https://7ff4-34-142-216-57.ngrok-free.app/predict-trees"
+    endpoint = "https://7dcf-35-187-243-232.ngrok-free.app/predict-trees"
     headers = {"ngrok-skip-browser-warning" : "Yes"}
     body = {
         "image_base64_chunk": image_base64,

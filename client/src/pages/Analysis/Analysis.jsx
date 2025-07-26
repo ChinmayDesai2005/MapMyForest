@@ -7,6 +7,12 @@ import { useEffect, useRef, useState } from "react";
 import MyLoader from "../../components/misc/MyLoader";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { useReactToPrint } from "react-to-print";
+import DoughnutChart from "../../components/DoughnutChart/DoughnutChart";
+import React from "react";
+import Plot from "react-plotly.js";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import rehypeReact from "rehype-react";
 
 function Analysis() {
   //   const markdown = `
@@ -129,9 +135,85 @@ function Analysis() {
   const [lat, lng] = selectedProject.location.split(",").map(Number);
   console.log(lat, lng);
 
+  const totalClassifications = {};
+
+  selectedProject.annotated_images.forEach((item) => {
+    const classes = item.classifications;
+    var counter = 0;
+    for (const key in classes) {
+      totalClassifications[key] =
+        (totalClassifications[key] || 0) + classes[key];
+    }
+  });
+
+  function PlotlyChart({ data, layout }) {
+    return (
+      <Plot
+        data={JSON.parse(data)}
+        layout={JSON.parse(layout)}
+        style={{ width: "100%", height: "400px" }}
+      />
+    );
+  }
+
+  const treeColorMapping = {
+    amla: "#8BC34A", // Light green
+    asopalav: "#4CAF50", // Green
+    babul: "#795548", // Brown
+    bamboo: "#A5D6A7", // Light mint green
+    banyan: "#2E7D32", // Dark green
+    bili: "#F9A825", // Amber
+    cactus: "#66BB6A", // Light green
+    champa: "#FFEB3B", // Yellow
+    coconut: "#8D6E63", // Brown
+    garmalo: "#9CCC65", // Light green
+    gulmohor: "#F44336", // Red
+    gunda: "#81C784", // Medium green
+    jamun: "#673AB7", // Deep purple
+    kanchan: "#FFC107", // Amber
+    kesudo: "#FF9800", // Orange
+    khajur: "#A1887F", // Brown
+    mango: "#FBC02D", // Yellow
+    motichanoti: "#7CB342", // Light green
+    neem: "#388E3C", // Green
+    nilgiri: "#26A69A", // Teal
+    other: "#9E9E9E", // Grey
+    pilikaren: "#CDDC39", // Lime
+    pipal: "#33691E", // Dark green
+    saptaparni: "#558B2F", // Light green
+    shirish: "#C8E6C9", // Very light green
+    simlo: "#8BC34A", // Light green
+    sitafal: "#AED581", // Light green
+    sonmahor: "#FFD54F", // Amber light
+    sugarcane: "#DCE775", // Lime light
+    vad: "#1B5E20", // Very dark green
+  };
+
+  const getSpeciesColor = (species) => {
+    return treeColorMapping[species.toLowerCase()] || "#9E9E9E"; // Default to grey if species not found
+  };
+
+  const [pieChartSchema, setPieChartSchema] = useState({
+    labels: Object.keys(totalClassifications).map((data) => data),
+    datasets: [
+      {
+        label: "Trees",
+        data: Object.values(totalClassifications).map((data) => data),
+        backgroundColor: Object.keys(totalClassifications).map((species) =>
+          getSpeciesColor(species)
+        ),
+        borderColor: "lightslategray",
+        borderWidth: 1,
+      },
+    ],
+  });
+
+  console.log(totalClassifications);
+
   const handleDownloadPdf = useReactToPrint({
     contentRef: analysisRef,
     documentTitle: `MapMyForest Analysis - ${selectedProject.project_name}`,
+
     removeAfterPrint: true,
 
     // onBeforePrint: () => console.log("Printing"),
@@ -150,7 +232,7 @@ function Analysis() {
         { project_id: selectedProject["_id"] },
         config
       );
-      // console.log(response);
+      console.log(response);
       setMarkDown(response.data.analysis_json.analysis || "# No data loaded");
       toast.success(response.data.message);
     } catch (error) {
@@ -165,6 +247,20 @@ function Analysis() {
     fetchAnalysis();
     console.log(selectedProject.annotated_images);
   }, []);
+
+  const numColumns = 3; // Define number of columns
+  let zData = [];
+  for (
+    let i = 0;
+    i < selectedProject.annotated_images.length;
+    i += numColumns
+  ) {
+    zData.push(
+      selectedProject.annotated_images
+        .slice(i, i + numColumns)
+        .map((img) => img.count)
+    );
+  }
 
   return (
     <>
@@ -203,13 +299,22 @@ function Analysis() {
               <div className="report-info-item">
                 Project Intention:{" "}
                 <span className="green">
-                  {selectedProject.project_intention.charAt(0).toUpperCase() +
-                    selectedProject.project_intention.slice(1)}
+                  {selectedProject.project_intention &&
+                    selectedProject.project_intention.charAt(0).toUpperCase() +
+                      selectedProject.project_intention.slice(1)}
                 </span>
               </div>
               <div className="report-info-item">
                 Project Status:{" "}
-                <span className="red">{selectedProject.currentStatus}</span>
+                <span
+                  className={
+                    selectedProject.currentStatus === "Completed"
+                      ? "green"
+                      : "red"
+                  }
+                >
+                  {selectedProject.currentStatus}
+                </span>
               </div>
             </div>
             <div className="report-map">
@@ -233,7 +338,77 @@ function Analysis() {
             </div>
           </div>
         </div>
-        <ReactMarkdown>{markdown}</ReactMarkdown>
+        <div className="analysis-charts">
+          <DoughnutChart
+            chartData={pieChartSchema}
+            title={"Tree Classifications"}
+            className="classification-chart"
+          />
+
+          <Plot
+            className="density-chart"
+            data={[
+              {
+                z: zData,
+                type: "heatmap",
+                colorscale: "Greens",
+                colorbar: {
+                  title: "Tree Count",
+                  // tickvals: [0, 100], // Set the ticks to range from 0 to maxValue
+                  // ticktext: ["0", "100"], // Labels for ticks
+                },
+                reversescale: true,
+                zmin: 0,
+              },
+            ]}
+            layout={{
+              title: "Tree Count Heatmap per Image",
+              autosize: true,
+              padding: 0,
+            }}
+          />
+        </div>
+
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          rehypePlugins={[rehypeRaw]}
+          components={{
+            div: (props) => {
+              if (props["data-plotly"]) {
+                console.log("data-plotly", props["data-plotly"]);
+                const { data, layout } = JSON.parse(props["data-plotly"]);
+                console.log(data, "\n", layout);
+                const { width, height, ...cleanedLayout } = layout;
+                const extendedLayout = {
+                  ...cleanedLayout,
+                  autosize: true,
+                  padding: 0,
+                  // width: "80vw",
+                  // height: "100px",
+                };
+                return (
+                  <div className="inline-chart-wrapper">
+                    <Plot
+                      className="inline-analysis-chart"
+                      data={data}
+                      layout={extendedLayout}
+                      style={{
+                        // width: "100%",
+                        // height: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                      config={{ responsive: true }}
+                    />
+                  </div>
+                );
+              }
+            },
+          }}
+        >
+          {markdown}
+        </ReactMarkdown>
       </div>
     </>
   );

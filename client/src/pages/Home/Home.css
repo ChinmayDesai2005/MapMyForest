@@ -4,15 +4,12 @@
 }
 
 .background-image {
-  background-image: url('../../assets/background_image.png');
+  background-image: url("../../assets/background_image.png");
   background-size: cover;
   background-position: center;
   height: 100vh;
   position: relative;
 }
-
-
-
 
 .overlay-content {
   position: absolute;

@@ -7,8 +7,8 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
   gap: 2.5rem;
+  font-family: "Outfit", sans-serif !important;
 }
-
 
 .brand-container {
   display: flex;
@@ -16,40 +16,34 @@
   flex-grow: 1;
 }
 
-
 .logo {
   width: 50px;
   margin-right: 10px;
 }
 
-
 .brand-title {
   font-size: 1.8rem;
-  font-family: 'Outfit', sans-serif;
+  font-family: "Outfit", sans-serif;
   font-weight: 700;
   cursor: pointer;
 }
-
 
 .nav-links {
   display: flex;
   gap: 2rem;
 }
 
-
 .nav-link {
   font-size: 1.1rem;
-  font-family: 'Outfit', sans-serif;
+  font-family: "Outfit", sans-serif !important;
   font-weight: 500;
   color: #333;
   text-decoration: none;
 }
 
-
 .nav-link:hover {
   color: #43d675;
 }
-
 
 .nav-icons {
   display: flex;
@@ -57,12 +51,10 @@
   gap: 1rem;
 }
 
-
 .icon {
   font-size: 1.5rem;
   color: #333;
 }
-
 
 .profile-image {
   width: 40px;

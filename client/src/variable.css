@@ -1,6 +1,7 @@
 * {
   --white: #ffffff;
   --light-green: hsl(104, 96%, 73%);
+  --highlight-green: rgba(155, 252, 120, 0.212);
   --white-blue: #ddffd1;
   --dark-green: #007a05;
   --purple: #5b59f4;

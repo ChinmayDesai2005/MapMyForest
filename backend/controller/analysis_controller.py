@@ -19,11 +19,15 @@ def CreateNewOrUpdateAnalysis():
     
     projectData['_id'] = str(projectData['_id'])
 
+    classifications = set()
+    for image in projectData['annotated_images']:
+        classifications.union(set(image['classifications']))
+
     analysis = generate_Analysis({
                                     'location': projectData['location'], 
-                                    'count': projectData['annotated_images'][0]['count'],
-                                    'classifications': set(projectData['annotated_images'][0]['classifications']),
-                                    'percentage': projectData['annotated_images'][0]['percentage'],
+                                    'count': sum([image['count'] for image in projectData['annotated_images']]),
+                                    'classifications': classifications,
+                                    'percentage': sum([image['percentage'] for image in projectData['annotated_images']]) / len(projectData['annotated_images']),
                                     'jurisdiction': projectData['jurisdiction'],
                                     'project_intention': projectData['project_intention'],
                                     'custom_prompt': projectData['custom_prompt'],

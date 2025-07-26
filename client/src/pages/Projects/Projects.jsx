@@ -96,8 +96,12 @@ function Projects() {
 
   const handleCardSelect = (project) => {
     setSelectedProject(project);
-    localStorage.setItem("selectedProject", JSON.stringify(project));
-    navigate("/home");
+    var temp = project;
+    temp.annotated_images = project.annotated_images.map(
+      ({ url, ...rest }) => rest
+    );
+    localStorage.setItem("selectedProject", JSON.stringify(temp));
+    navigate("/home/info");
   };
 
   const newProjectCreation = async () => {
@@ -198,7 +202,17 @@ function Projects() {
                 />
               ))}
             </div>
-            <MapContainer center={[23, 80]} zoom={5} scrollWheelZoom={true} style={{ height: "400px", width: "100%" }}>
+            <MapContainer
+              center={[23, 80]}
+              zoom={5}
+              scrollWheelZoom={true}
+              style={{
+                height: "400px",
+                width: "85%",
+                margin: "auto",
+                borderRadius: "25px",
+              }}
+            >
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -211,8 +225,13 @@ function Projects() {
                   <Popup>
                     <div className="MapContainer">
                       <h4>{project.project_name}</h4>
-                      <p>Created on: {new Date(project.created_at).toDateString()}</p>
-                      <button onClick={() => handleCardSelect(project)}>View Project</button>
+                      <p>
+                        Created on:{" "}
+                        {new Date(project.created_at).toDateString()}
+                      </p>
+                      <button onClick={() => handleCardSelect(project)}>
+                        View Project
+                      </button>
                     </div>
                   </Popup>
                 </Marker>
