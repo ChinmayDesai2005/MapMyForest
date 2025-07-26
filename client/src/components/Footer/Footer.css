@@ -4,8 +4,7 @@
   align-items: flex-start;
   padding: 20px;
   background-color: #f1f1f1;
-  font-family: 'Outfit', sans-serif;
-  
+  font-family: "Outfit", sans-serif;
 }
 
 .logo-container {
@@ -29,7 +28,7 @@
 
 .menu-container {
   display: flex;
-  gap: 30px; 
+  gap: 30px;
 }
 
 .menu-column {
@@ -59,8 +58,8 @@
 
 .social-media-container {
   display: flex;
-  gap: 15px; 
-  align-items: flex-start; 
+  gap: 15px;
+  align-items: flex-start;
 }
 
 .icon {
@@ -73,4 +72,16 @@
 
 .icon:hover {
   color: #007bff;
+}
+
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+  }
+  .menu-container {
+    margin-bottom: 2rem;
+  }
 }

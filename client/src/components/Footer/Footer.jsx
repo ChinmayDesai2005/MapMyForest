@@ -1,7 +1,13 @@
-import React from 'react';
-import { FaInstagram, FaFacebook, FaTwitter, FaLinkedin, FaYoutube } from 'react-icons/fa';
-import './Footer.css'; 
-import Logo from '../../assets/Logo_png.png';
+import React from "react";
+import {
+  FaInstagram,
+  FaFacebook,
+  FaTwitter,
+  FaLinkedin,
+  FaYoutube,
+} from "react-icons/fa";
+import "./Footer.css";
+import Logo from "../../assets/Logo_png.png";
 
 function Footer() {
   return (
@@ -14,22 +20,34 @@ function Footer() {
       <nav className="menu-container">
         <div className="menu-column">
           <h4 className="menu-title">About Us</h4>
-          <a href="#blog" className="menu-item">Blog</a>
+          <a href="#blog" className="menu-item">
+            Blog
+          </a>
         </div>
         <div className="menu-column">
           <h4 className="menu-title">Contact</h4>
-          <a href="#faq" className="menu-item">F.A.Q</a>
-          <a href="#contact" className="menu-item">Contact</a>
-          <a href="#newsroom" className="menu-item">Newsroom</a>
+          <a href="#faq" className="menu-item">
+            F.A.Q
+          </a>
+          <a href="#contact" className="menu-item">
+            Contact
+          </a>
+          <a href="#newsroom" className="menu-item">
+            Newsroom
+          </a>
         </div>
         <div className="menu-column">
           <h4 className="menu-title">Legal</h4>
-          <a href="#terms" className="menu-item">Terms</a>
-          <a href="#privacy" className="menu-item">Privacy Policy</a>
+          <a href="#terms" className="menu-item">
+            Terms
+          </a>
+          <a href="#privacy" className="menu-item">
+            Privacy Policy
+          </a>
         </div>
       </nav>
 
-      <div className="social-media-container">
+      {/* <div className="social-media-container">
         <a href="https://instagram.com" className="icon" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
           <FaInstagram />
         </a>
@@ -45,7 +63,7 @@ function Footer() {
         <a href="https://youtube.com" className="icon" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
           <FaYoutube />
         </a>
-      </div>
+      </div> */}
     </footer>
   );
 }
